@@ -15,15 +15,15 @@ import edu.wpi.first.wpilibj2.command.Command;
 /** An example command that uses an example subsystem. */
 public class DriveCommand extends Command {
   private final DriveTrain m_DriveTrain;
-  private double m_Speed;
-  private double m_RotationRate;
+  private DoubleSupplier m_Speed;
+  private DoubleSupplier m_RotationRate;
 
   public DriveCommand(DriveTrain driveTrain, DoubleSupplier speedSupplier, DoubleSupplier rotationRateSupplier) {
     this.m_DriveTrain = driveTrain;
     addRequirements(driveTrain);
 
-    this.m_Speed = speedSupplier.getAsDouble();
-    this.m_RotationRate = rotationRateSupplier.getAsDouble();
+    this.m_Speed = speedSupplier;
+    this.m_RotationRate = rotationRateSupplier;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -39,7 +39,7 @@ public class DriveCommand extends Command {
     }
 
 
-    m_DriveTrain.drive(m_Speed * Global_Variables.drivePercentModifier, m_RotationRate * Global_Variables.rotationPercentModifier);
+    m_DriveTrain.drive(m_Speed.getAsDouble(), m_RotationRate.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.

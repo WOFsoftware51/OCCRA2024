@@ -1,0 +1,20 @@
+Autons OCCRA 2024:
+
+NOTES: Ball
+
+- Score only
+- Leave only
+
+- Score, Pick up BallRight
+- Score, pick up BallRight, Score
+- Score, pick up BallLeft
+- Score, pick up BallLeft, Score
+
+- Score, pick up BallLeftFar, Score
+- Score, pick up BallCenterFar, Score
+- Score, pick up BallRightFar, Score
+
+- Score, pick up BallLeftFar, Score, pick up BallLeft, Score
+- Score, pick up BallCenterFar, Score, pick up BallLeft, Score
+- Score, pick up BallCenterFar, Score, pick up BallRight, Score
+- Score, pick up BallRightFar, Score, pick up BallRight, Score

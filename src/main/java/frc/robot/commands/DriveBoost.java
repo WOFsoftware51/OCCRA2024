@@ -8,8 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Global_Variables;
 
-public class DriveBoost extends Command {
-  private static final double defaultSpeed = Constants.DriveTrain.DEFAULT_SPEED;
+public class DriveBoost extends Command {  
   /**Default Speed: {@value #defaultSpeed}  <p> Boost Speed: 1.0 */
   public DriveBoost() 
   {
