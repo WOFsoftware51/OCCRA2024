@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -26,16 +27,21 @@ public class Auton_Subsystem extends SubsystemBase
 
   public Command autonScore(Intake intake, Shooter shooter)
   {
-    return new SequentialCommandGroup(
-      new ShooterCommand(shooter).until(new Auton_Wait(10).getAsBooleanSupplier()),
-      new IntakeState(intake, Intake.State.IN).until(()-> hasBallPlusTime())
+    return new ParallelRaceGroup(
+      new ShooterCommand(shooter).until(new Auton_Wait(3.0).getAsBooleanSupplier()),
+      new IntakeState(intake, Intake.State.IN).until(()-> !hasBall())
     );
+  }
+
+  public Command autonIntake(Intake intake)
+  {
+    return new IntakeState(intake, Intake.State.IN);
   }
 
   private boolean hasBallPlusTime()
   {
 
-    if(hasBall() && new Auton_Wait(10).getAsBooleanSupplier().getAsBoolean())
+    if(hasBall() && new Auton_Wait(11).getAsBooleanSupplier().getAsBoolean())
     {
       return true;
     }

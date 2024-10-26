@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Global_Variables;
@@ -73,11 +75,11 @@ public class DriveTrain extends SubsystemBase {
 
   public double powerGoToAngle(double angle)
   {
-    double kP = 0.05;
-    return (getGryoAngle() - angle) * kP;
+    double kP = 0.075;
+    return -(getGryoDegrees() - angle) * kP;
   }
 
-  public double getGryoAngle(){
+  public double getGryoDegrees(){
     return m_gyro.getAngle()%360;
   }
 
@@ -86,11 +88,23 @@ public class DriveTrain extends SubsystemBase {
     m_gyro.reset();
   }
 
+  public Command gotoAngle(double angle)
+  {
+    return Commands.run(()-> driveAuton(0, powerGoToAngle(angle)));
+  }
+
   @Override
   public void periodic() 
   {
     SmartDashboard.putNumber("Left Drive Encoder", getLeftDriveTrainEncoder());
     SmartDashboard.putNumber("Right Drive Encoder", getRightDriveTrainEncoder());
-    SmartDashboard.putNumber("Gryo", getGryoAngle());
+    SmartDashboard.putNumber("Gryo", getGryoDegrees());
+
+    if(Global_Variables.testAutonTimer.getSelected() != null)
+    {
+      SmartDashboard.putNumber("FEET TO SECONDS", Constants.AutonPositions.FEET_TO_SECONDS(Global_Variables.testAutonTimer.getSelected()));
+      SmartDashboard.putNumber("TestAutonTimer", (Global_Variables.testAutonTimer.getSelected()));
+    }
+
   }
 }

@@ -15,7 +15,7 @@ public final class Middle_CenterBall extends SequentialCommandGroup {
   public Middle_CenterBall(DriveTrain driveTrain, boolean isLeft){
     int leftOrRight = isLeft ? 1 : -1;
     addCommands(
-      new Auton_DriveCommand_Time(driveTrain, 0.5, 0.0, Constants.AutonPositions.XCoordinate.START_TO_FARBALL),
+      new Auton_DriveCommand_Time(driveTrain, 0.5, 0.0, Constants.AutonPositions.XCoordinate.START_TO_FARBALL)
     );
   }
 }

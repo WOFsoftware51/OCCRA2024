@@ -14,8 +14,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Hood extends SubsystemBase {
   private final DoubleSolenoid m_hanger1 = new DoubleSolenoid(PneumaticsModuleType.REVPH, 0, 1);
-  // private final DoubleSolenoid m_hanger2 = new DoubleSolenoid(PneumaticsModuleType.REVPH, s2, 3);
-
+  private final DoubleSolenoid m_hanger2 = new DoubleSolenoid(PneumaticsModuleType.REVPH, 2, 3);
   private final Compressor m_compressor;
 
   /** Creates a new Pnematic_Test. */
@@ -25,22 +24,45 @@ public class Hood extends SubsystemBase {
     m_compressor.enableDigital();
   }
 
-  private void setOut(){
+  public void setOut1(){
     m_hanger1.set(Value.kReverse);
-    // m_hanger2.set(Value.kReverse);
   }
 
-  private void setIn(){
+  private void setIn1(){
     m_hanger1.set(Value.kForward);
-    // m_hanger2.set(Value.kForward);
   }
 
-  public Command setInCommand(){
-    return Commands.run(()-> setIn(), this);
+  private void setOut2(){
+    m_hanger2.set(Value.kReverse);
+  }
+
+  private void setIn2(){
+    m_hanger2.set(Value.kForward);
+  }
+
+  private void setOutBoth(){
+    m_hanger1.set(Value.kReverse);
+    m_hanger2.set(Value.kReverse);
+  }
+
+  private void setInBoth(){
+    m_hanger1.set(Value.kForward);
+    m_hanger2.set(Value.kForward);
+  }
+
+  public Command humanPlayerInCommand(){
+    return Commands.run(()-> setIn1());
+  } 
+  public Command humanPlayerOutCommand(){
+    return Commands.run(()-> setOut1());
   } 
 
-  public Command setOutCommand(){
-    return Commands.run(()-> setOut(), this);
+  public Command hangInCommand(){
+    return Commands.run(()-> setInBoth());
+  } 
+
+  public Command hangOutCommand(){
+    return Commands.run(()-> setOutBoth());
   }
  
 

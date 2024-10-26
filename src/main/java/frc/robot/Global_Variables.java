@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -16,13 +17,14 @@ import edu.wpi.first.wpilibj.DigitalInput;
  */
 public final class Global_Variables 
 {
-  public static double drivePercentModifier = 0.8;
-  public static double rotationPercentModifier = 0.5;
-  public static boolean boostOn = false;
-  public static boolean isShooting = false;
-  private static DigitalInput m_sensor = new DigitalInput(3);
+    public static double drivePercentModifier = 0.8;
+    public static double rotationPercentModifier = 0.5;
+    public static boolean boostOn = false;
+    public static boolean isShooting = false;
+    private static DigitalInput m_sensor = new DigitalInput(3);
+    public static SendableChooser<Double> testAutonTimer = new SendableChooser<>();
 
-  public static int getSensorVal(){
+    public static int getSensorVal(){
         if(m_sensor.get()) {
             return 1;
         }

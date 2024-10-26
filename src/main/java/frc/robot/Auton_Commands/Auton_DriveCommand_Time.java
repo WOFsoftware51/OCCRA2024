@@ -17,17 +17,17 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class Auton_DriveCommand_Time extends Command {
   private final DriveTrain m_DriveTrain;
   private double m_Speed;
-  private double m_RotationAngle;
+  private double m_RotationTargetDegrees;
   private double m_durationSeconds;
   private double counter = 0;
   private boolean endCondition = false;
 
-  public Auton_DriveCommand_Time(DriveTrain driveTrain, double speed, double rotationAngle, double durationSeconds) {
+  public Auton_DriveCommand_Time(DriveTrain driveTrain, double speed, double rotationTargetDegrees, double durationSeconds) {
     m_DriveTrain = driveTrain;
     addRequirements(driveTrain);
 
     m_Speed = speed;
-    m_RotationAngle = rotationAngle;
+    m_RotationTargetDegrees = rotationTargetDegrees;
     m_durationSeconds = durationSeconds;
   }
 
@@ -40,16 +40,29 @@ public class Auton_DriveCommand_Time extends Command {
   @Override
   public void execute() 
   {
-    if(m_durationSeconds > counter*0.05)
+    if(m_durationSeconds > counter*0.05 )
     {
       counter++;
-      m_DriveTrain.driveAuton(m_Speed, m_DriveTrain.powerGoToAngle(m_RotationAngle));
+      m_DriveTrain.driveAuton(m_Speed, m_DriveTrain.powerGoToAngle(m_RotationTargetDegrees));
     }
     else
     {
       m_DriveTrain.driveAuton(0, 0);
       endCondition = true;
     }
+
+
+    // if(m_durationSeconds < counter*0.05 )
+    // {
+    //   m_DriveTrain.driveAuton(0, 0);
+    //   endCondition = true;
+    // }
+    // else
+    // {
+    //   counter++;
+    //   m_DriveTrain.driveAuton(m_Speed, m_DriveTrain.powerGoToAngle(m_RotationTargetDegrees));
+    // }
+
 
   }
 
@@ -58,6 +71,11 @@ public class Auton_DriveCommand_Time extends Command {
   public void end(boolean interrupted) 
   {
       m_DriveTrain.drive(0, 0);
+  }
+
+  public double getElapsedSeconds()
+  {
+    return counter*0.05;
   }
 
   // Returns true when the command should end.

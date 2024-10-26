@@ -48,9 +48,10 @@ public final class Constants {
   {
     private class XCoordinateFeet
     {
-      public static double START_TO_CLOSEBALL = 8;
-      public static double START_TO_FARBALL = 3.0;
-      public static double START_TO_CENTERFARBALL = 3.0;
+      public static double START_TO_CLOSEBALL = 3.5; //7 feet away
+      public static double START_TO_FARBALL = 0.0;
+      public static double START_TO_CENTERFARBALL = 15.0;
+      public static double START_TO_WHITELINE = 4.2;
     }
     private class YCoordinateFeet
     {
@@ -68,6 +69,7 @@ public final class Constants {
       public static  double START_TO_CLOSEBALL = FEET_TO_SECONDS(XCoordinateFeet.START_TO_CLOSEBALL);
       public static double START_TO_FARBALL = FEET_TO_SECONDS(XCoordinateFeet.START_TO_FARBALL);
       public static double START_TO_CENTERFARBALL = FEET_TO_SECONDS(XCoordinateFeet.START_TO_CENTERFARBALL);
+      public static double START_TO_WHITELINE = FEET_TO_SECONDS(XCoordinateFeet.START_TO_WHITELINE);
     }
     public class YCoordinate
     {
@@ -81,7 +83,8 @@ public final class Constants {
     }    
     public static double FEET_TO_SECONDS(double distance)
     {
-      return distance * 1;
+      double nDistance = distance - 2.7083333333333333;
+      return (-2.895 + Math.sqrt((2.895 * 2.895) + (4 * 0.2728 * (nDistance + 0.1784))))/(2*0.2728);
     }
   }
 
