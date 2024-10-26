@@ -9,16 +9,13 @@ import frc.robot.Constants;
 import frc.robot.Auton_Commands.Auton_DriveCommand_Time;
 import frc.robot.subsystems.DriveTrain;
 
-public final class Left_LeftBall extends SequentialCommandGroup {
+public final class CenterBall_Middle extends SequentialCommandGroup {
 
   /** Example static factory for an autonomous command. */
-  public Left_LeftBall(DriveTrain driveTrain, boolean isLeft){
+  public CenterBall_Middle(DriveTrain driveTrain, boolean isLeft){
     int leftOrRight = isLeft ? 1 : -1;
-
     addCommands(
-      new Auton_DriveCommand_Time(driveTrain, false, 0.0, Constants.AutonPositions.XCoordinate.START_TO_CLOSEBALL),
-      new Auton_DriveCommand_Time(driveTrain, false, -45.0 * leftOrRight, 0),
-      new Auton_DriveCommand_Time(driveTrain, false, -45.0, Constants.AutonPositions.RotationCoordinate.START_TO_CLOSEBALL)
+      new Auton_DriveCommand_Time(driveTrain, true, 0.0, Constants.AutonPositions.XCoordinate.START_TO_FARBALL)
     );
   }
 }

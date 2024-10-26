@@ -46,36 +46,39 @@ public final class Constants {
 
   public class AutonPositions
   {
-    private class XCoordinateFeet
+    private final class XCoordinateFeet
     {
       public static double START_TO_CLOSEBALL = 3.5; //7 feet away
       public static double START_TO_FARBALL = 0.0;
       public static double START_TO_CENTERFARBALL = 15.0;
-      public static double START_TO_WHITELINE = 4.2;
+      public static double START_TO_WHITELINE = 4.0;
     }
-    private class YCoordinateFeet
+    private final class YCoordinateFeet
     {
-      public static double START_TO_CLOSEBALL = 1.0;
+      public static double START_TO_CLOSEBALL = 1.0; //1 foot offset 
       public static double START_TO_FARBALL = 3.0;
     }
-    private class RotationCoordinateFeet
+    private final class RotationCoordinateFeet
     {
-      public static double START_TO_CLOSEBALL = 0.5;
+      public static double START_TO_CLOSEBALL = 
+                              Math.sqrt(((7 - XCoordinateFeet.START_TO_CLOSEBALL)*(7 - XCoordinateFeet.START_TO_CLOSEBALL)) + (YCoordinateFeet.START_TO_CLOSEBALL * YCoordinateFeet.START_TO_CLOSEBALL));
       public static double START_TO_FARBALL = 3.0;
     }
-
+      /**In Seconds */
     public class XCoordinate
     {
       public static  double START_TO_CLOSEBALL = FEET_TO_SECONDS(XCoordinateFeet.START_TO_CLOSEBALL);
       public static double START_TO_FARBALL = FEET_TO_SECONDS(XCoordinateFeet.START_TO_FARBALL);
       public static double START_TO_CENTERFARBALL = FEET_TO_SECONDS(XCoordinateFeet.START_TO_CENTERFARBALL);
-      public static double START_TO_WHITELINE = FEET_TO_SECONDS(XCoordinateFeet.START_TO_WHITELINE);
+      public static double START_TO_WHITELINE = FEET_TO_SECONDS(XCoordinateFeet.START_TO_WHITELINE + 0.2);
     }
+    /**In Seconds */
     public class YCoordinate
     {
       public static double START_TO_CLOSEBALL = FEET_TO_SECONDS(YCoordinateFeet.START_TO_CLOSEBALL);
       public static double START_TO_FARBALL = FEET_TO_SECONDS(YCoordinateFeet.START_TO_FARBALL);
     }
+    /**In Seconds */
     public class RotationCoordinate
     {
       public static double START_TO_CLOSEBALL = FEET_TO_SECONDS(RotationCoordinateFeet.START_TO_CLOSEBALL);

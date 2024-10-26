@@ -7,8 +7,6 @@ package frc.robot.Autos_Time;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
-import frc.robot.Constants.AutonPositions;
-import frc.robot.Global_Variables;
 import frc.robot.Auton_Commands.Auton_DriveCommand_Time;
 import frc.robot.subsystems.Auton_Subsystem;
 import frc.robot.subsystems.DriveTrain;
@@ -19,8 +17,8 @@ public final class LeaveOnly extends SequentialCommandGroup {
   public LeaveOnly(DriveTrain driveTrain, Auton_Subsystem auton_Subsystem){
     addCommands(
       new InstantCommand(()-> driveTrain.resetGryo()),
-      new Auton_DriveCommand_Time(driveTrain, 0.75, 0.0, AutonPositions.FEET_TO_SECONDS(Global_Variables.testAutonTimer.getSelected())),//Constants.AutonPositions.XCoordinate.START_TO_WHITELINE),
-      new Auton_DriveCommand_Time(driveTrain, 0.0, 0.0, 2)
+      new Auton_DriveCommand_Time(driveTrain, false, 0.0, Constants.AutonPositions.XCoordinate.START_TO_WHITELINE),
+      new Auton_DriveCommand_Time(driveTrain, false, 0.0, 2)
     );
   }
 }

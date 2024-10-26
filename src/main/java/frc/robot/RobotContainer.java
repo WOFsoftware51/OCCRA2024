@@ -86,9 +86,9 @@ public class RobotContainer {
     autonChooser.addOption("Score", 1);    
     autonChooser.addOption("Score LeftBall Score", 2);
     autonChooser.addOption("Score RightBall Score", 3);
-    autonChooser.addOption("Score FarLeftBall Score", 4);
-    autonChooser.addOption("Score FarLeftBall Score", 5);
-    autonChooser.addOption("Leave Zone", 6);
+    // autonChooser.addOption("Score FarLeftBall Score", 4);
+    // autonChooser.addOption("Score FarRightBall Score", 5);
+    autonChooser.addOption("Leave Zone Only", 6);
     autonChooser.addOption("Score + Leave Zone", 7);
 
     SmartDashboard.putData("Auton Timer", testAutonTimer);

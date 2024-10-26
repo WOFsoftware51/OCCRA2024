@@ -16,9 +16,9 @@ public final class LeftBall_Left extends SequentialCommandGroup {
     int leftOrRight = isLeft ? 1 : -1;
 
     addCommands(
-      new Auton_DriveCommand_Time(driveTrain, -0.5, 0.0, Constants.AutonPositions.YCoordinate.START_TO_CLOSEBALL),
-      new Auton_DriveCommand_Time(driveTrain, 0.0, 0 * leftOrRight, Constants.AutonPositions.RotationCoordinate.START_TO_CLOSEBALL),
-      new Auton_DriveCommand_Time(driveTrain, -0.5, 0.0, Constants.AutonPositions.YCoordinate.START_TO_CLOSEBALL)
+      new Auton_DriveCommand_Time(driveTrain, true, -45.0, Constants.AutonPositions.RotationCoordinate.START_TO_CLOSEBALL),
+      new Auton_DriveCommand_Time(driveTrain, true, 0 * leftOrRight, 0),
+      new Auton_DriveCommand_Time(driveTrain, true, 0, Constants.AutonPositions.XCoordinate.START_TO_CLOSEBALL)
     );
   }
 }

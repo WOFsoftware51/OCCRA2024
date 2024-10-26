@@ -4,6 +4,7 @@
 
 package frc.robot.Autos_Time;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.Autos_Time.Score;
@@ -16,6 +17,7 @@ public final class Score_FarLeftBall_Score extends SequentialCommandGroup {
   /** Example static factory for an autonomous command. */
   public Score_FarLeftBall_Score(Shooter shooter, Intake intake, DriveTrain driveTrain, Auton_Subsystem auton_Subsystem, boolean isLeft){
     addCommands(
+      new InstantCommand(()-> driveTrain.resetGryo()),
       new Score(shooter, intake, auton_Subsystem),
       new Left_LeftBall(driveTrain, isLeft),
       new LeftBall_Left(driveTrain, isLeft),

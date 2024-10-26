@@ -4,6 +4,7 @@
 
 package frc.robot.Autos_Time;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Auton_Subsystem;
@@ -15,6 +16,7 @@ public final class Score_Leave extends SequentialCommandGroup {
   /** Example static factory for an autonomous command. */
   public Score_Leave(Shooter shooter, Intake intake, DriveTrain driveTrain, Auton_Subsystem auton_Subsystem){
     addCommands(
+      new InstantCommand(()-> driveTrain.resetGryo()),
       new LeaveOnly(driveTrain, auton_Subsystem),
       new Score(shooter, intake, auton_Subsystem)
     );

@@ -93,6 +93,10 @@ public class DriveTrain extends SubsystemBase {
     return Commands.run(()-> driveAuton(0, powerGoToAngle(angle)));
   }
 
+  public boolean gyroIsConnected()
+  {
+    return m_gyro.isConnected();
+  }
   @Override
   public void periodic() 
   {

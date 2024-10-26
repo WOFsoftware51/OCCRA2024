@@ -38,6 +38,12 @@ public class Auton_Subsystem extends SubsystemBase
     return new IntakeState(intake, Intake.State.IN);
   }
 
+  public Command autonIntakeUntilHasBall(Intake intake)
+  {
+    return new IntakeState(intake, Intake.State.IN).until(()-> hasBall());
+  }
+
+
   private boolean hasBallPlusTime()
   {
 
