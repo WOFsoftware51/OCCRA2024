@@ -9,6 +9,7 @@ import frc.robot.Autos_Time.LeaveOnly;
 import frc.robot.Autos_Time.Score;
 import frc.robot.Autos_Time.Score_FarLeftBall_Score;
 import frc.robot.Autos_Time.Score_Leave;
+import frc.robot.Autos_Time.Score_Leave_LeftBall;
 import frc.robot.Autos_Time.Score_LeftBall;
 import frc.robot.Autos_Time.Score_LeftBall_Score;
 import frc.robot.commands.DriveBoost;
@@ -69,14 +70,14 @@ public class RobotContainer {
     operator.rightTrigger(0.8).whileTrue(m_Intake.intakeOutCommand().finallyDo(()-> {m_Intake.floorIntakeOff(); m_Intake.transferIntakeOff();})); //
 
     /*Intake */
-    operator.rightBumper().whileTrue(m_Intake.intakeInCommand().finallyDo(()-> {m_Intake.floorIntakeOff(); m_Intake.transferIntakeOff();})); //
+    operator.leftTrigger(0.8).whileTrue(m_Intake.intakeInCommand().finallyDo(()-> {m_Intake.floorIntakeOff(); m_Intake.transferIntakeOff();})); //
 
     /*Human Player Intake*/
-    operator.leftBumper().whileTrue(m_Intake.humanPlayerIntakeCommand().finallyDo(()-> {m_Intake.floorIntakeOff(); m_Intake.transferIntakeOff();})); //
-    operator.leftBumper().whileTrue(m_hood.humanPlayerInCommand().finallyDo(()->m_hood.setOut1()));
+    // operator.leftBumper().whileTrue(m_Intake.humanPlayerIntakeCommand().finallyDo(()-> {m_Intake.floorIntakeOff(); m_Intake.transferIntakeOff();})); //
+    // operator.leftBumper().whileTrue(m_hood.humanPlayerInCommand().finallyDo(()->m_hood.setOut1()));
       
-    operator.start().whileTrue(m_hood.hangInCommand());
-    operator.back().whileTrue(m_hood.hangOutCommand());
+    operator.start().whileTrue(m_hood.hangOutCommand());
+    operator.back().whileTrue(m_hood.hangInCommand());
   }
 
   private void printToSmartDashboard()
@@ -90,13 +91,14 @@ public class RobotContainer {
     // autonChooser.addOption("Score FarRightBall Score", 5);
     autonChooser.addOption("Leave Zone Only", 6);
     autonChooser.addOption("Score + Leave Zone", 7);
+    autonChooser.addOption("Score + Leave + Get Ball", 8);
 
     SmartDashboard.putData("Auton Timer", testAutonTimer);
 
-    testAutonTimer.setDefaultOption("Time: 13.59375",  13.59375);
-    for(double i = 0; i <= 5; i+=0.5){
-      testAutonTimer.addOption("Time: " + i, i);
-    }
+    // testAutonTimer.setDefaultOption("Time: 13.59375",  13.59375);
+    // for(double i = 0; i <= 5; i+=0.5){
+    //   testAutonTimer.addOption("Time: " + i, i);
+    // }
     Global_Variables.testAutonTimer = testAutonTimer;
 
   }    
@@ -114,6 +116,7 @@ public class RobotContainer {
       case 5: return new Score_FarLeftBall_Score(m_Shooter, m_Intake, m_DriveTrain, m_Auton_Subsystem, false); 
       case 6: return new LeaveOnly(m_DriveTrain, m_Auton_Subsystem); 
       case 7: return new Score_Leave(m_Shooter, m_Intake, m_DriveTrain, m_Auton_Subsystem); 
+      case 8: return new Score_Leave_LeftBall(m_Shooter, m_Intake, m_DriveTrain, m_Auton_Subsystem); 
 
       default: return new DoNothing();
     }    

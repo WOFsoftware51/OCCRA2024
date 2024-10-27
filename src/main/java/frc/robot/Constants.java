@@ -51,7 +51,7 @@ public final class Constants {
       public static double START_TO_CLOSEBALL = 3.5; //7 feet away
       public static double START_TO_FARBALL = 0.0;
       public static double START_TO_CENTERFARBALL = 15.0;
-      public static double START_TO_WHITELINE = 4.0;
+      public static double START_TO_WHITELINE = 3.0;
     }
     private final class YCoordinateFeet
     {

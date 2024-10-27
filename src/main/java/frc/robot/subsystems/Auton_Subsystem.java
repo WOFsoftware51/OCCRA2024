@@ -4,16 +4,10 @@
 
 package frc.robot.subsystems;
 
-import java.util.ArrayList;
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Global_Variables;
-import frc.robot.Auton_Commands.Auton_DriveCommand_Time;
 import frc.robot.Auton_Commands.Auton_Wait;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeState;
@@ -27,9 +21,9 @@ public class Auton_Subsystem extends SubsystemBase
 
   public Command autonScore(Intake intake, Shooter shooter)
   {
-    return new ParallelRaceGroup(
-      new ShooterCommand(shooter).until(new Auton_Wait(3.0).getAsBooleanSupplier()),
-      new IntakeState(intake, Intake.State.IN).until(()-> !hasBall())
+    return new ParallelCommandGroup(
+      new ShooterCommand(shooter).until(new Auton_Wait(4.0).getAsBooleanSupplier()),
+      new IntakeState(intake, Intake.State.IN).until(()-> !hasBallPlusTime())
     );
   }
 
@@ -47,7 +41,7 @@ public class Auton_Subsystem extends SubsystemBase
   private boolean hasBallPlusTime()
   {
 
-    if(hasBall() && new Auton_Wait(11).getAsBooleanSupplier().getAsBoolean())
+    if(hasBall() && new Auton_Wait(1.0).getAsBooleanSupplier().getAsBoolean())
     {
       return true;
     }

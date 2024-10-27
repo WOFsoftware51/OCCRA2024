@@ -6,13 +6,17 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Hood extends SubsystemBase {
+  private boolean isSolenoidInitialized = false;
   private final DoubleSolenoid m_hanger1 = new DoubleSolenoid(PneumaticsModuleType.REVPH, 0, 1);
   private final DoubleSolenoid m_hanger2 = new DoubleSolenoid(PneumaticsModuleType.REVPH, 2, 3);
   private final Compressor m_compressor;
@@ -40,14 +44,17 @@ public class Hood extends SubsystemBase {
     m_hanger2.set(Value.kForward);
   }
 
-  private void setOutBoth(){
+  private void setInBoth(){
     m_hanger1.set(Value.kReverse);
     m_hanger2.set(Value.kReverse);
   }
 
-  private void setInBoth(){
+  private void setOutBoth(){
     m_hanger1.set(Value.kForward);
     m_hanger2.set(Value.kForward);
+
+
+    m_hanger1.set(Value.kOff);
   }
 
   public Command humanPlayerInCommand(){
@@ -67,7 +74,15 @@ public class Hood extends SubsystemBase {
  
 
   @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
+  public void periodic() 
+  {
+    SmartDashboard.putNumber("Compressor pressure", m_compressor.getPressure());
+    SmartDashboard.putNumber("Battery Voltage", RobotController.getBatteryVoltage());
+
+    if(DriverStation.isEnabled() && !isSolenoidInitialized)
+    {
+      setInBoth();
+      isSolenoidInitialized = true;
+    }
   }
 }

@@ -106,8 +106,8 @@ public class DriveTrain extends SubsystemBase {
 
     if(Global_Variables.testAutonTimer.getSelected() != null)
     {
-      SmartDashboard.putNumber("FEET TO SECONDS", Constants.AutonPositions.FEET_TO_SECONDS(Global_Variables.testAutonTimer.getSelected()));
-      SmartDashboard.putNumber("TestAutonTimer", (Global_Variables.testAutonTimer.getSelected()));
+      // SmartDashboard.putNumber("FEET TO SECONDS", Constants.AutonPositions.FEET_TO_SECONDS(Global_Variables.testAutonTimer.getSelected()));
+      // SmartDashboard.putNumber("TestAutonTimer", (Global_Variables.testAutonTimer.getSelected()));
     }
 
   }

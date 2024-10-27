@@ -5,27 +5,27 @@
 package frc.robot.Autos_Time;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.Constants;
+import frc.robot.Auton_Commands.Auton_DriveCommand_Time;
 import frc.robot.Auton_Commands.Auton_Wait;
+import frc.robot.Constants.AutonPositions;
 import frc.robot.subsystems.Auton_Subsystem;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
-public final class Score_Leave extends SequentialCommandGroup {
+public final class Score_Leave_LeftBall extends SequentialCommandGroup {
 
   /** Example static factory for an autonomous command. */
-  public Score_Leave(Shooter shooter, Intake intake, DriveTrain driveTrain, Auton_Subsystem auton_Subsystem){
+  public Score_Leave_LeftBall(Shooter shooter, Intake intake, DriveTrain driveTrain, Auton_Subsystem auton_Subsystem){
     addCommands(
       new InstantCommand(()-> driveTrain.resetGryo()),
-      new LeaveOnly(driveTrain, auton_Subsystem),
       new Score(shooter, intake, auton_Subsystem),
-      
-      new ParallelRaceGroup(
-        new LeaveOnly(driveTrain, auton_Subsystem),
-        new SequentialCommandGroup(new Auton_Wait(Constants.AutonPositions.XCoordinate.START_TO_WHITELINE*0.5), new Score(shooter, intake, auton_Subsystem), auton_Subsystem.autonIntakeUntilHasBall(intake)))
+      new ParallelCommandGroup(
+        new Auton_DriveCommand_Time(driveTrain, false, 0.0, AutonPositions.FEET_TO_SECONDS(Math.sqrt(50) + 2)),     //Constants.AutonPositions.XCoordinate.START_TO_WHITELINE),
+        auton_Subsystem.autonIntakeUntilHasBall(intake))
     );
   }
 }
