@@ -23,7 +23,7 @@ public class Auton_Subsystem extends SubsystemBase
   {
     return new ParallelCommandGroup(
       new ShooterCommand(shooter).until(new Auton_Wait(4.0).getAsBooleanSupplier()),
-      new IntakeState(intake, Intake.State.IN).until(()-> !hasBallPlusTime())
+      new IntakeState(intake, Intake.State.IN).until(()-> !hasBall() && new Auton_Wait(1.0).getAsBooleanSupplier().getAsBoolean())
     );
   }
 

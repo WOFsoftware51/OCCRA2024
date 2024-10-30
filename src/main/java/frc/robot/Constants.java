@@ -22,7 +22,7 @@ public final class Constants {
     public static final int BACK_LEFT_ID = 3;
     public static final int BACK_RIGHT_ID = 4;
     // public static final int LEFT_CANCODER_ID = 1;
-    // public static final int RIGHT_CANCODER_ID = 2;
+    // public static final int RIGHT_CANCODE  R_ID = 2;
     /**Length of the center of the left drive wheel to center of the right drive wheel in inches*/
     public static final double WHEEL_TO_WHEEL_DIAMETER = 22;
     /**In inches */
@@ -37,6 +37,8 @@ public final class Constants {
   {
     public static final int SHOOTER_1 = 5;
     public static final int SHOOTER_2 = 6;
+    public static final int CANCODER_1 = 1;
+
   }
   public class Intake
   {
