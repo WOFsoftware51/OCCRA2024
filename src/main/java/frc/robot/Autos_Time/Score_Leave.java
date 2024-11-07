@@ -16,16 +16,12 @@ import frc.robot.subsystems.Shooter;
 
 public final class Score_Leave extends SequentialCommandGroup {
 
-  /** Example static factory for an autonomous command. */
+  /** Scores, drives forward. */
   public Score_Leave(Shooter shooter, Intake intake, DriveTrain driveTrain, Auton_Subsystem auton_Subsystem){
     addCommands(
       new InstantCommand(()-> driveTrain.resetGryo()),
-      new LeaveOnly(driveTrain, auton_Subsystem),
       new Score(shooter, intake, auton_Subsystem),
-      
-      new ParallelRaceGroup(
-        new LeaveOnly(driveTrain, auton_Subsystem),
-        new SequentialCommandGroup(new Auton_Wait(Constants.AutonPositions.XCoordinate.START_TO_WHITELINE*0.5), new Score(shooter, intake, auton_Subsystem), auton_Subsystem.autonIntakeUntilHasBall(intake)))
+      new LeaveOnly(driveTrain, auton_Subsystem)
     );
   }
 }

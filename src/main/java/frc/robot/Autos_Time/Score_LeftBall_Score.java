@@ -17,7 +17,7 @@ import frc.robot.subsystems.Shooter;
 
 public final class Score_LeftBall_Score extends SequentialCommandGroup {
 
-  /** Example static factory for an autonomous command. */
+  /**Robot MUST be placed perpindicular to the wall. */
   public Score_LeftBall_Score(Shooter shooter, Intake intake, DriveTrain driveTrain, Auton_Subsystem auton_Subsystem, boolean isLeft){
     addCommands(
       new InstantCommand(()-> driveTrain.resetGryo()),

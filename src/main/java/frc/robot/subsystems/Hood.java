@@ -17,8 +17,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Hood extends SubsystemBase {
   private boolean isSolenoidInitialized = false;
-  private final DoubleSolenoid m_hanger1 = new DoubleSolenoid(PneumaticsModuleType.REVPH, 0, 1);
-  private final DoubleSolenoid m_hanger2 = new DoubleSolenoid(PneumaticsModuleType.REVPH, 2, 3);
+  private final DoubleSolenoid m_hanger1 = new DoubleSolenoid(PneumaticsModuleType.REVPH, 3, 2);
+  private final DoubleSolenoid m_hanger2 = new DoubleSolenoid(PneumaticsModuleType.REVPH, 0, 1);
   private final Compressor m_compressor;
 
   /** Creates a new Pnematic_Test. */
@@ -34,6 +34,7 @@ public class Hood extends SubsystemBase {
 
   private void setIn1(){
     m_hanger1.set(Value.kForward);
+    m_hanger2.set(Value.kReverse);
   }
 
   private void setOut2(){
@@ -46,15 +47,12 @@ public class Hood extends SubsystemBase {
 
   private void setInBoth(){
     m_hanger1.set(Value.kReverse);
-    m_hanger2.set(Value.kReverse);
+    m_hanger2.set(Value.kForward);
   }
 
   private void setOutBoth(){
     m_hanger1.set(Value.kForward);
-    m_hanger2.set(Value.kForward);
-
-
-    m_hanger1.set(Value.kOff);
+    m_hanger2.set(Value.kReverse);
   }
 
   public Command humanPlayerInCommand(){
@@ -65,11 +63,11 @@ public class Hood extends SubsystemBase {
   } 
 
   public Command hangInCommand(){
-    return Commands.run(()-> setInBoth());
+    return Commands.run(()-> setOutBoth());
   } 
 
   public Command hangOutCommand(){
-    return Commands.run(()-> setOutBoth());
+    return Commands.run(()-> setInBoth());
   }
  
 
@@ -81,7 +79,8 @@ public class Hood extends SubsystemBase {
 
     if(DriverStation.isEnabled() && !isSolenoidInitialized)
     {
-      setInBoth();
+      setOut2();
+      setOut1();
       isSolenoidInitialized = true;
     }
   }

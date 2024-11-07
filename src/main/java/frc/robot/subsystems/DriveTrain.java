@@ -48,6 +48,7 @@ public class DriveTrain extends SubsystemBase {
 
 
     m_robotDrive = new DifferentialDrive(frontLeftDrive, frontRightDrive);
+    // m_robotDrive.setSafetyEnabled(true);
   } 
 
   public void drive(double xSpeed, double zRotationRate) 
@@ -63,15 +64,15 @@ public class DriveTrain extends SubsystemBase {
     m_robotDrive.curvatureDrive(-xSpeed, zRotationRate, true);
   }
 
-  public double getLeftDriveTrainEncoder()
-  {
-    return frontLeftDrive.getSelectedSensorPosition()*360*(1/4096)*Constants.DriveTrain.DRIVE_GEARRATIO;
-  }
+  // public double getLeftDriveTrainEncoder()
+  // {
+  //   return frontLeftDrive.getSelectedSensorPosition()*360*(1/4096)*Constants.DriveTrain.DRIVE_GEARRATIO;
+  // }
 
-  public double getRightDriveTrainEncoder()
-  {
-    return frontRightDrive.getSelectedSensorPosition()*360*(1/4096)*Constants.DriveTrain.DRIVE_GEARRATIO;
-  }
+  // public double getRightDriveTrainEncoder()
+  // {
+  //   return frontRightDrive.getSelectedSensorPosition()*360*(1/4096)*Constants.DriveTrain.DRIVE_GEARRATIO;
+  // }
 
   public double powerGoToAngle(double angle)
   {
@@ -100,14 +101,14 @@ public class DriveTrain extends SubsystemBase {
   @Override
   public void periodic() 
   {
-    SmartDashboard.putNumber("Left Drive Encoder", getLeftDriveTrainEncoder());
-    SmartDashboard.putNumber("Right Drive Encoder", getRightDriveTrainEncoder());
+    // SmartDashboard.putNumber("Left Drive Encoder", getLeftDriveTrainEncoder());
+    // SmartDashboard.putNumber("Right Drive Encoder", getRightDriveTrainEncoder());
     SmartDashboard.putNumber("Gryo", getGryoDegrees());
 
     if(Global_Variables.testAutonTimer.getSelected() != null)
     {
       // SmartDashboard.putNumber("FEET TO SECONDS", Constants.AutonPositions.FEET_TO_SECONDS(Global_Variables.testAutonTimer.getSelected()));
-      // SmartDashboard.putNumber("TestAutonTimer", (Global_Variables.testAutonTimer.getSelected()));
+      // SmartDashboard.putNumber("TestAutonTimer", (Global_Variabl es.testAutonTimer.getSelected()));
     }
 
   }

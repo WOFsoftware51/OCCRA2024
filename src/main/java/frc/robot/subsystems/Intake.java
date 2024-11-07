@@ -13,11 +13,12 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Global_Variables;
+import frc.robot.Global_Variables.SCORING_MODE;
 
 public class Intake extends SubsystemBase {
-  private WPI_TalonSRX m_floorIntake1 = new WPI_TalonSRX(Constants.Intake.FLOOR_INTAKE_1);
-  private WPI_TalonSRX m_transferIntake1 = new WPI_TalonSRX(Constants.Intake.TRANSFER_INTAKE_1);
-
+  private WPI_TalonSRX m_floorIntake1 = new WPI_TalonSRX(Constants.Intake.TRANSFER_INTAKE_1);
+  private WPI_TalonSRX m_transferIntake1 = new WPI_TalonSRX(Constants.Intake.FLOOR_INTAKE_1);
+  private SCORING_MODE currentScoringMode = SCORING_MODE.BASKET;
   /** Creates a new FloorIntake. */
   public Intake()
   {
@@ -37,6 +38,11 @@ public class Intake extends SubsystemBase {
   {
     m_floorIntake1.set(-0.75);
   }
+  public void floorIntakeOut(double percentPower)
+  {
+    m_floorIntake1.set(percentPower);
+  }
+
   public void floorIntakeOff()
   {
     m_floorIntake1.set(0.0);
@@ -55,10 +61,17 @@ public class Intake extends SubsystemBase {
     m_transferIntake1.set(0.0);
   }
 
+  public void bothOff()
+  {
+    m_transferIntake1.set(0.0);
+    m_floorIntake1.set(0.0);
+  }
+
   public Command humanPlayerIntakeCommand()
   {
     return Commands.run(()-> 
     {      
+      currentScoringMode = SCORING_MODE.HUMAN_PLAYER;
       if(Global_Variables.getSensorVal() == 1 && !Global_Variables.isShooting)
       {
         transferIntakeOff();
@@ -67,16 +80,23 @@ public class Intake extends SubsystemBase {
       else
       {
         transferIntakeIn();
-        floorIntakeOut();
+        floorIntakeOut(-0.5);
       }
 
-    }, this);
+    }, this).
+    finallyDo(()-> 
+    {
+      currentScoringMode = SCORING_MODE.BASKET;
+      floorIntakeOff(); 
+      transferIntakeOff();
+    });
   }
 
-  public Command intakeInCommand()
+  public Command BasketIntakeCommand()
   {
     return Commands.run(()-> 
     {
+      currentScoringMode = SCORING_MODE.BASKET;
       if(Global_Variables.getSensorVal() == 1 && !Global_Variables.isShooting)
       {
         transferIntakeOff();
@@ -87,7 +107,13 @@ public class Intake extends SubsystemBase {
         transferIntakeIn();
         floorIntakeIn();
       }
-    }, this);
+    }, this).
+    finallyDo(()->
+    {
+      floorIntakeOff(); 
+      transferIntakeOff();
+    });
+
   }
 
 
@@ -97,7 +123,12 @@ public class Intake extends SubsystemBase {
     {
       transferIntakeOut();
       floorIntakeOut();
-    }, this);
+    }, this).
+    finallyDo(()->
+    {
+      floorIntakeOff(); 
+      transferIntakeOff();
+    });
   }
  
   @Override
@@ -105,6 +136,7 @@ public class Intake extends SubsystemBase {
   {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Proximity Sensor", Global_Variables.getSensorVal());
+    Global_Variables.currentScoringMode = currentScoringMode;
   }
 
   public enum State

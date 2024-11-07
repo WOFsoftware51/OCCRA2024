@@ -23,7 +23,12 @@ public final class Global_Variables
     public static boolean isShooting = false;
     private static DigitalInput m_sensor = new DigitalInput(3);
     public static SendableChooser<Double> testAutonTimer = new SendableChooser<>();
+    public static SendableChooser<Double> velocitySendableChooser = new SendableChooser<>();
+    public static SCORING_MODE currentScoringMode = SCORING_MODE.BASKET;
 
+    /**@return 1 if has piece
+     *  <li> -1 if doesn't have piece
+     */
     public static int getSensorVal(){
         if(m_sensor.get()) {
             return 1;
@@ -31,6 +36,12 @@ public final class Global_Variables
         else{
             return -1;
         }
+    }
+
+    public enum SCORING_MODE
+    {
+        BASKET,
+        HUMAN_PLAYER,
     }
 }
 

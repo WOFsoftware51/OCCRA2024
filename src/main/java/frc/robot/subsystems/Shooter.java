@@ -15,26 +15,36 @@ import frc.robot.Global_Variables;
 
 public class Shooter extends SubsystemBase {
   private WPI_TalonSRX motor1 = new WPI_TalonSRX(Constants.Shooter.SHOOTER_1);
-  private WPI_TalonSRX motor2 = new WPI_TalonSRX(Constants.Shooter.SHOOTER_2);
+  private WPI_TalonSRX motor2 = new WPI_TalonSRX (Constants.Shooter.SHOOTER_2);
+  private final double kFHumanPlayer = 0.04;
+  private final double kFBasket = 0.05;
+  private double targetVelocity = 0;
 
   public Shooter(){
-
+    // motor1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+    motor1.setSelectedSensorPosition(0.0);
     motor1.setNeutralMode(NeutralMode.Coast);
     motor1.setInverted(true);
     motor2.setNeutralMode(NeutralMode.Coast);
     motor2.setInverted(true);
+    motor2.follow(motor1);
 
+    motor1.config_kF( 0, kFBasket);
     motor1.config_kP(0, 0.1);
-    motor1.config_kI(0, 0);
+    motor1.config_kI(0, 0.0);
     motor1.config_kD(0, 0);
 
-    motor1.config_kP(0, 0.1);
-    motor1.config_kI(0, 0);
-    motor1.config_kD(0, 0);
-
+    motor2.config_kF( 0, kFBasket);
+    motor2.config_kP(0, 0.1);
+    motor2.config_kI(0, 0.0);
+    motor2.config_kD(0, 0);
 
   }
 
+  public double getTargetVelocity()
+  {
+    return targetVelocity;
+  }
   public void motor1OnPercent(double x)
   {
     motor1.set(x);
@@ -54,25 +64,49 @@ public class Shooter extends SubsystemBase {
   public void setOn()
   {
     motor1.set(0.75); //4000 RPM
-    motor2.set(0.75);
+    // motor2.set(0.75);
   }
 
-  public void setOnVelocity(double targetVelocity)
+  public void setOnBasketVelocityRPM()
   {
-    motor1.set(TalonSRXControlMode.Velocity, targetVelocity);
-    motor2.set(TalonSRXControlMode.Velocity, targetVelocity);
+    targetVelocity = Global_Variables.velocitySendableChooser.getSelected();
+
+    motor1.config_kF(0, kFBasket);
+    motor1.set(TalonSRXControlMode.Velocity, targetVelocity*(4096.0/600.0));
+
+    motor2.config_kF(0, kFBasket);
+    motor2.set(TalonSRXControlMode.Velocity, (targetVelocity-1000.0)*(4096.0/600.0));
   }
+  public void setOnHumanPlayerVelocityRPM()
+  {
+    targetVelocity = 2750.0;
+    motor1.config_kF(0, kFHumanPlayer);
+    motor1.set(TalonSRXControlMode.Velocity, targetVelocity*(4096.0/600.0));
+  }
+
 
   public void setOff()
   {
     motor1.set(0.0);
-    motor2.set(0.0);
   }
 
-  public double getVelocity()
+  public double getVelocity1RPM()
   {
-    return motor1.getSelectedSensorVelocity();
+    return motor1.getSelectedSensorVelocity()*600/4096;
   }
+
+  public double getVelocity2RPM()
+  {
+    return motor2.getSelectedSensorVelocity()*600/4096;
+  }
+
+
+
+  public double getPositionRotations()
+  {
+    return motor1.getSelectedSensorPosition()/4096;
+  }
+
 
   public double getGotoVeloctiy(double targetVelocity)
   {
@@ -85,5 +119,12 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putBoolean("Is Shooting", Global_Variables.isShooting);
+    SmartDashboard.putNumber("Shooter 1 RPM", getVelocity1RPM());
+    SmartDashboard.putNumber("Shooter 2 RPM", getVelocity2RPM());
+
+    SmartDashboard.putNumber("Shooter Rotations", getPositionRotations());
+    SmartDashboard.putString("Scoring Mode", Global_Variables.currentScoringMode.toString());
+    SmartDashboard.putNumber("Shooter Target Velocity", targetVelocity);
+    // SmartDashboard.putNumber("Scoring testvariable", testVariable);
   }
 }
