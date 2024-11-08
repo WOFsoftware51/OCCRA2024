@@ -21,24 +21,24 @@ public class Shooter extends SubsystemBase {
   private double targetVelocity = 0;
 
   public Shooter(){
-    // motor1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+    // motor1.set/   
     motor1.setSelectedSensorPosition(0.0);
+    motor2.setSelectedSensorPosition(0.0);
     motor1.setNeutralMode(NeutralMode.Coast);
     motor1.setInverted(true);
     motor2.setNeutralMode(NeutralMode.Coast);
     motor2.setInverted(true);
-    motor2.follow(motor1);
+    // motor2.follow(motor1);
 
     motor1.config_kF( 0, kFBasket);
     motor1.config_kP(0, 0.1);
     motor1.config_kI(0, 0.0);
     motor1.config_kD(0, 0);
 
-    motor2.config_kF( 0, kFBasket);
+    motor2.config_kF( 0, 0.03);
     motor2.config_kP(0, 0.1);
     motor2.config_kI(0, 0.0);
     motor2.config_kD(0, 0);
-
   }
 
   public double getTargetVelocity()
@@ -74,20 +74,25 @@ public class Shooter extends SubsystemBase {
     motor1.config_kF(0, kFBasket);
     motor1.set(TalonSRXControlMode.Velocity, targetVelocity*(4096.0/600.0));
 
-    motor2.config_kF(0, kFBasket);
-    motor2.set(TalonSRXControlMode.Velocity, (targetVelocity-1000.0)*(4096.0/600.0));
+    motor2.config_kF(0, 0.04);
+    motor2.set(TalonSRXControlMode.Velocity, targetVelocity*(4096.0/600.0));
   }
   public void setOnHumanPlayerVelocityRPM()
   {
     targetVelocity = 2750.0;
     motor1.config_kF(0, kFHumanPlayer);
     motor1.set(TalonSRXControlMode.Velocity, targetVelocity*(4096.0/600.0));
+
+    motor2.config_kF(0, 0.03);
+    motor2.set(TalonSRXControlMode.Velocity, targetVelocity*(4096.0/600.0));
+
   }
 
 
   public void setOff()
   {
     motor1.set(0.0);
+    motor2.set(0.0);
   }
 
   public double getVelocity1RPM()
@@ -108,12 +113,12 @@ public class Shooter extends SubsystemBase {
   }
 
 
-  public double getGotoVeloctiy(double targetVelocity)
-  {
-    PIDController pidController = new PIDController(0.1, 0, 0);
+  // public double getGotoVeloctiy(double targetVelocity)
+  // {
+  //   PIDController pidController = new PIDController(0.1, 0, 0);
     
-    return pidController.calculate(targetVelocity);
-  }
+  //   return pidController.calculate(targetVelocity);
+  // }
 
   @Override
   public void periodic() {
