@@ -7,6 +7,7 @@ package frc.robot.Autos_Time;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.Auton_Commands.Auton_DriveCommand_Time;
+import frc.robot.Auton_Commands.Auton_Rotate_Command;
 import frc.robot.subsystems.DriveTrain;
 
 public final class Left_FarLeftBall extends SequentialCommandGroup {
@@ -15,9 +16,8 @@ public final class Left_FarLeftBall extends SequentialCommandGroup {
   public Left_FarLeftBall(DriveTrain driveTrain, boolean isLeft){
     int leftOrRight = isLeft ? 1 : -1;
     addCommands(
-      new Auton_DriveCommand_Time(driveTrain, false, 0.0, Constants.AutonPositions.XCoordinate.START_TO_FARBALL),
-      new Auton_DriveCommand_Time(driveTrain, false, 0.3 * leftOrRight, Constants.AutonPositions.RotationCoordinate.START_TO_FARBALL),
-      new Auton_DriveCommand_Time(driveTrain, false, 0.0, Constants.AutonPositions.YCoordinate.START_TO_FARBALL)
+      new Auton_Rotate_Command(driveTrain, 28.0794288936 * leftOrRight),
+      new Auton_DriveCommand_Time(driveTrain, false, 28.0794288936 * leftOrRight, Constants.AutonPositions.XCoordinate.START_TO_FARBALL)
     );
   }
 }

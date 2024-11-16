@@ -16,9 +16,9 @@ public final class FarLeftBall_Left extends SequentialCommandGroup {
     int leftOrRight = isLeft ? 1 : -1;
     
     addCommands(
-      new Auton_DriveCommand_Time(driveTrain, true, 0.0, Constants.AutonPositions.YCoordinate.START_TO_FARBALL),
-      new Auton_DriveCommand_Time(driveTrain, false, -0.0 * leftOrRight, Constants.AutonPositions.RotationCoordinate.START_TO_FARBALL),
-      new Auton_DriveCommand_Time(driveTrain, true, 0.0, Constants.AutonPositions.XCoordinate.START_TO_FARBALL)
+      new Auton_DriveCommand_Time(driveTrain, true,  28.0794288936 * leftOrRight, Constants.AutonPositions.XCoordinate.START_TO_FARBALL-2)
+      // new Auton_DriveCommand_Time(driveTrain, false, -0.0 * leftOrRight, Constants.AutonPositions.RotationCoordinate.START_TO_FARBALL),
+      // new Auton_DriveCommand_Time(driveTrain, true, 0.0, Constants.AutonPositions.XCoordinate.START_TO_FARBALL)
     );
   }
 }

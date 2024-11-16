@@ -84,9 +84,31 @@ public class Shooter extends SubsystemBase {
     motor1.set(TalonSRXControlMode.Velocity, targetVelocity*(4096.0/600.0));
 
     motor2.config_kF(0, 0.03);
-    motor2.set(TalonSRXControlMode.Velocity, targetVelocity*(4096.0/600.0));
-
+    motor2.set(TalonSRXControlMode.Velocity, (targetVelocity+750)*(4096.0/600.0));
   }
+  public void setOnBumperShotPerpindicularRPM()
+  {
+    targetVelocity = Global_Variables.velocitySendableChooser.getSelected();
+
+    motor1.config_kF(0, kFBasket);
+    motor1.set(TalonSRXControlMode.Velocity, targetVelocity*(4096.0/600.0));
+
+    motor2.config_kF(0, 0.04);
+    motor2.set(TalonSRXControlMode.Velocity, (targetVelocity+750)*(4096.0/600.0));
+  }
+
+  public void setOnBumperAngledShotRPM()
+  {
+    targetVelocity = Global_Variables.velocitySendableChooser.getSelected();
+
+    motor1.config_kF(0, kFBasket);
+    motor1.set(TalonSRXControlMode.Velocity, targetVelocity*(4096.0/600.0));
+
+    motor2.config_kF(0, 0.04);
+    motor2.set(TalonSRXControlMode.Velocity, (targetVelocity+500)*(4096.0/600.0));
+  }
+
+
 
 
   public void setOff()

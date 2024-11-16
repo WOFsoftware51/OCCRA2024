@@ -9,13 +9,13 @@ import frc.robot.subsystems.Auton_Subsystem;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
-public final class Score extends SequentialCommandGroup {
+public final class ScoreBumper extends SequentialCommandGroup {
 
   /** Example static factory for an autonomous command. */
-  public Score(Shooter shooter, Intake intake, Auton_Subsystem auton_Subsystem){
+  public ScoreBumper(Shooter shooter, Intake intake, Auton_Subsystem auton_Subsystem){
     addCommands(
       // auton_Subsystem.autonScore(intake, shooter)
-      auton_Subsystem.autonScore(intake, shooter)
+      auton_Subsystem.autonScoreBumperPerpinduclar(intake, shooter)
     );
   }
 }

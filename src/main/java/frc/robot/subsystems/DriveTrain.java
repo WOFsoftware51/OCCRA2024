@@ -10,6 +10,7 @@ import com.ctre.phoenix6.hardware.CANcoder;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -18,10 +19,12 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Global_Variables;
+import com.kauailabs.navx.frc.AHRS;
 
 public class DriveTrain extends SubsystemBase {
-  private static final SPI.Port kGyroPort = SPI.Port.kOnboardCS0;
-	private ADXRS450_Gyro m_gyro = new ADXRS450_Gyro(kGyroPort);
+  // private static final SPI.Port kGyroPort = SPI.Port.kOnboardCS0;
+  private double angle = 0;
+  private AHRS m_gyro = new AHRS(SPI.Port.kMXP);
 
   private final WPI_TalonSRX frontLeftDrive = new WPI_TalonSRX(Constants.DriveTrain.FRONT_LEFT_ID);
   private final WPI_TalonSRX frontRightDrive = new WPI_TalonSRX(Constants.DriveTrain.FRONT_RIGHT_ID);
@@ -31,7 +34,8 @@ public class DriveTrain extends SubsystemBase {
 
   public DriveTrain() 
   {
-    m_gyro.calibrate();
+    m_gyro.reset();
+
     backLeftDrive.follow(frontLeftDrive);
     backRightDrive.follow(frontRightDrive);
     frontLeftDrive.setInverted(true);
@@ -44,11 +48,8 @@ public class DriveTrain extends SubsystemBase {
     frontRightDrive.setNeutralMode(NeutralMode.Brake);
     backRightDrive.setNeutralMode(NeutralMode.Brake);
 
-
-
-
     m_robotDrive = new DifferentialDrive(frontLeftDrive, frontRightDrive);
-    // m_robotDrive.setSafetyEnabled(true);
+    m_robotDrive.setSafetyEnabled(false);
   } 
 
   public void drive(double xSpeed, double zRotationRate) 
@@ -73,15 +74,25 @@ public class DriveTrain extends SubsystemBase {
   // {
   //   return frontRightDrive.getSelectedSensorPosition()*360*(1/4096)*Constants.DriveTrain.DRIVE_GEARRATIO;
   // }
-
+  double kP = 0.01625;
   public double powerGoToAngle(double angle)
   {
-    double kP = 0.075;
+
+    if(Math.abs(getGryoDegrees() - angle) <= 10)
+    {
+      kP = 0.0575;//0.0325; //0.75
+    }
+    else{
+      kP = 0.015;
+    }
+
+
+
     return -(getGryoDegrees() - angle) * kP;
   }
 
   public double getGryoDegrees(){
-    return m_gyro.getAngle()%360;
+    return angle;
   }
 
   public void resetGryo()
@@ -101,15 +112,16 @@ public class DriveTrain extends SubsystemBase {
   @Override
   public void periodic() 
   {
-    // SmartDashboard.putNumber("Left Drive Encoder", getLeftDriveTrainEncoder());
-    // SmartDashboard.putNumber("Right Drive Encoder", getRightDriveTrainEncoder());
-    SmartDashboard.putNumber("Gryo", getGryoDegrees());
+    SmartDashboard.putNumber("Gryo", angle);
 
-    if(Global_Variables.testAutonTimer.getSelected() != null)
+    if(gyroIsConnected() && Global_Variables.isUsingGyro)
     {
-      // SmartDashboard.putNumber("FEET TO SECONDS", Constants.AutonPositions.FEET_TO_SECONDS(Global_Variables.testAutonTimer.getSelected()));
-      // SmartDashboard.putNumber("TestAutonTimer", (Global_Variabl es.testAutonTimer.getSelected()));
+      angle = m_gyro.getYaw()%360;
     }
+    else{
+      angle = 0;
+    }
+
 
   }
 }

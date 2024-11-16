@@ -50,8 +50,8 @@ public final class Constants {
   {
     private final class XCoordinateFeet
     {
-      public static double START_TO_CLOSEBALL = 3.5; //7 feet away
-      public static double START_TO_FARBALL = 0.0;
+      public static double START_TO_CLOSEBALL = 11.348999; //8 feet away
+      public static double START_TO_FARBALL = 21.2687334384;
       public static double START_TO_CENTERFARBALL = 15.0;
       public static double START_TO_WHITELINE = 3.0;
     }
@@ -69,7 +69,7 @@ public final class Constants {
       /**In Seconds */
     public class XCoordinate
     {
-      public static  double START_TO_CLOSEBALL = FEET_TO_SECONDS(XCoordinateFeet.START_TO_CLOSEBALL);
+      public static  double START_TO_CLOSEBALL = FEET_TO_SECONDS(XCoordinateFeet.START_TO_CLOSEBALL*0.5);
       public static double START_TO_FARBALL = FEET_TO_SECONDS(XCoordinateFeet.START_TO_FARBALL);
       public static double START_TO_CENTERFARBALL = FEET_TO_SECONDS(XCoordinateFeet.START_TO_CENTERFARBALL);
       public static double START_TO_WHITELINE = FEET_TO_SECONDS(XCoordinateFeet.START_TO_WHITELINE + 0.2);

@@ -16,10 +16,10 @@ import frc.robot.subsystems.Auton_Subsystem;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
-public final class Score_LeftBall_Score extends SequentialCommandGroup {
+public final class Score_LeftBall_Far_Score extends SequentialCommandGroup {
 
   /**Robot MUST be placed perpindicular to the wall. */
-  public Score_LeftBall_Score(Shooter shooter, Intake intake, DriveTrain driveTrain, Auton_Subsystem auton_Subsystem, boolean isLeft){
+  public Score_LeftBall_Far_Score(Shooter shooter, Intake intake, DriveTrain driveTrain, Auton_Subsystem auton_Subsystem, boolean isLeft){
     addCommands(
       new InstantCommand(()-> driveTrain.resetGryo()),
       auton_Subsystem.autonScoreBumperPerpinduclar(intake, shooter),
@@ -27,7 +27,13 @@ public final class Score_LeftBall_Score extends SequentialCommandGroup {
         new Left_LeftBall(driveTrain, isLeft),
         auton_Subsystem.autonIntakeUntilHasBall(intake)),
       new LeftBall_Left(driveTrain, isLeft),
+      auton_Subsystem.autonScoreBumperAngled(intake, shooter),
+      new ParallelDeadlineGroup(
+        new Left_FarLeftBall(driveTrain, isLeft),
+        auton_Subsystem.autonIntakeUntilHasBall(intake)),
+      new FarLeftBall_Left(driveTrain, isLeft),
       auton_Subsystem.autonScoreBumperAngled(intake, shooter)
+
     );
   }
 }

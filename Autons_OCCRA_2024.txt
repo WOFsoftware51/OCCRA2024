@@ -18,3 +18,31 @@ NOTES: Ball
 - Score, pick up BallCenterFar, Score, pick up BallLeft, Score
 - Score, pick up BallCenterFar, Score, pick up BallRight, Score
 - Score, pick up BallRightFar, Score, pick up BallRight, Score
+
+
+Hood Solenoids
+Left Down
+
+Right Up
+
+R=a/g
+
+8.574/15
+
+10/R=*d
+
+
+
+
+
+
+1.) Fixing Gryo  * (kinda)-_-
+
+2.) Write a slow 2 piece *
+
+3.) Fix 3 piece
+
+
+4.) Work on 4 piece
+
+5.) Work on 3 close piece

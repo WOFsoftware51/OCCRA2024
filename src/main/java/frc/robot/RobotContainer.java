@@ -8,9 +8,15 @@ import frc.robot.Autos_Time.DoNothing;
 import frc.robot.Autos_Time.LeaveOnly;
 import frc.robot.Autos_Time.Score;
 import frc.robot.Autos_Time.Score_FarLeftBall_Score;
+import frc.robot.Autos_Time.Score_FirstShot;
 import frc.robot.Autos_Time.Score_Leave;
 import frc.robot.Autos_Time.Score_Leave_GetBall;
+import frc.robot.Autos_Time.Score_Leave_GetBall_GetFarBall_GetMiddle_Score;
 import frc.robot.Autos_Time.Score_Leave_GetBall_Score;
+import frc.robot.Autos_Time.Score_Leave_GetBall_Score_GetFarBall;
+import frc.robot.Autos_Time.Score_Leave_GetBall_Score_GetFarBall_Score;
+import frc.robot.Autos_Time.Score_Leave_GetBall_Score_Slow;
+import frc.robot.Autos_Time.Score_LeftBall_Far_Score;
 import frc.robot.Autos_Time.Score_LeftBall_Score;
 import frc.robot.commands.CANdle_Intake;
 import frc.robot.commands.DriveBoost;
@@ -22,9 +28,11 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Shooter;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
@@ -44,9 +52,9 @@ public class RobotContainer {
   private final CANdle_Subsystem m_Candle = new CANdle_Subsystem();
 
   private SendableChooser<Integer> autonChooser = new SendableChooser<>();
-  private SendableChooser<Double> testAutonTimer = new SendableChooser<>();;
-  private SendableChooser<Double> m_velocitySendableChooser = new SendableChooser<>();;
-
+  private SendableChooser<Double> testAutonTimer = new SendableChooser<>();
+  private SendableChooser<Double> m_velocitySendableChooser = new SendableChooser<>();
+  private SendableChooser<Boolean> usingGyroChooser = new SendableChooser<>();
 
   private final CommandXboxController driver = new CommandXboxController(0);
   private final CommandXboxController operator = new CommandXboxController(1);
@@ -63,6 +71,7 @@ public class RobotContainer {
 
   private void configureBindings() 
   {
+    testController.a().whileTrue(m_DriveTrain.gotoAngle(45));
 
     driver.back().whileTrue(new InstantCommand(()->m_DriveTrain.resetGryo()));
 
@@ -73,33 +82,65 @@ public class RobotContainer {
     operator.a().whileTrue(new ShooterGoToVelocity(m_Shooter));
 
     /*IntakeSpit */
-    operator.rightTrigger(0.8).whileTrue(m_Intake.intakeOutCommand().finallyDo(()-> {m_Intake.floorIntakeOff(); m_Intake.transferIntakeOff();})); //
+    operator.rightBumper().whileTrue(m_Intake.intakeOutCommand().finallyDo(()-> {m_Intake.floorIntakeOff(); m_Intake.transferIntakeOff();})); //
 
     /*Intake */
     operator.leftTrigger(0.8).whileTrue(m_Intake.BasketIntakeCommand().finallyDo(()-> {m_Intake.floorIntakeOff(); m_Intake.transferIntakeOff();})); //
     operator.leftTrigger(0.8).whileTrue(new CANdle_Intake(m_Candle));
+    operator.leftTrigger(0.8).whileTrue(Commands.run(()-> driverRumbleOnIfSensor()).finallyDo(()-> driverRumbleOff()));
 
     /*Human Player Intake*/
     operator.leftBumper().whileTrue(m_Intake.humanPlayerIntakeCommand().finallyDo(()-> {m_Intake.floorIntakeOff(); m_Intake.transferIntakeOff();})); //
     operator.leftBumper().whileTrue(m_hood.humanPlayerInCommand().finallyDo(()->m_hood.setOut1()));
+    operator.leftBumper().whileTrue(new CANdle_Intake(m_Candle));
       
     operator.back().whileTrue(m_hood.hangOutCommand());
     operator.start().whileTrue(m_hood.hangInCommand());
+
+
   }
+  /**Function that, when note has been intaked, causes driver controller to rumble*/
+  private void driverRumbleOnIfSensor()
+  {
+    if(Global_Variables.getSensorVal() == 1)
+    {
+      driver.getHID().setRumble(RumbleType.kBothRumble, 1);
+      operator.getHID().setRumble(RumbleType.kBothRumble, 1);
+    }
+    else
+    {
+      driver.getHID().setRumble(RumbleType.kBothRumble, 0);
+      operator.getHID().setRumble(RumbleType.kBothRumble, 0);
+    }
+  }
+  private void driverRumbleOff()
+  {
+      driver.getHID().setRumble(RumbleType.kBothRumble, 0);
+      operator.getHID().setRumble(RumbleType.kBothRumble, 0);
+  }
+
+
 
   private void printToSmartDashboard()
   {
     SmartDashboard.putData("Autons", autonChooser);
     autonChooser.setDefaultOption("Do Nothing", 0);
-    autonChooser.addOption("Score", 1);    
-    // autonChooser.addOption("Score LeftBall Score", 2);
-    // autonChooser.addOption("Score RightBall Score", 3);
-    // autonChooser.addOption("Score FarLeftBall Score", 4);
-    // autonChooser.addOption("Score FarRightBall Score", 5);
+    autonChooser.addOption("Score Only", 1);    
+    // autonChooser.addOption("Left 2 piece Test", 2);
+    // autonChooser.addOption("Right 2 piece Test", 3);
+    // autonChooser.addOption("Left 3 Piece Test", 13);
+    // autonChooser.addOption("Right 3 Piece Test", 14);
     autonChooser.addOption("Leave Zone Only", 6);
     autonChooser.addOption("Score + Leave Zone", 7);
     autonChooser.addOption("Score + Leave + Get Ball", 8);
-    autonChooser.addOption("Score + Get Ball + Score", 9);
+    // autonChooser.addOption("Score + Get Ball + Score", 9);
+    // autonChooser.addOption("Score + Get Ball + Score + Get Middle Ball", 10);
+    autonChooser.addOption("Left 3 Piece", 11);
+    autonChooser.addOption("Right 3 Piece", 15);
+    autonChooser.addOption("Score 2 Piece Slow", 12);
+    autonChooser.addOption("Left 4 Piece (Gets Center Piece at the End)", 16);
+    autonChooser.addOption("Right 4 Piece (Gets Center Piece at the End)", 17);
+
 
     SmartDashboard.putData("Auton Timer", testAutonTimer);
 
@@ -121,6 +162,12 @@ public class RobotContainer {
       m_velocitySendableChooser.addOption("Shooter Velocity: " + (1575 - (25 * i)), 1575.0 - (25.0 * i));
     }
     Global_Variables.velocitySendableChooser = m_velocitySendableChooser;
+
+    SmartDashboard.putData("Gyroboolean", usingGyroChooser);
+    usingGyroChooser.addOption("Not Using Gyro", false);
+    usingGyroChooser.setDefaultOption("Using Gyro", true);
+
+    Global_Variables.isUsingGyro = usingGyroChooser.getSelected();
   }    
 
 
@@ -129,7 +176,7 @@ public class RobotContainer {
     switch(autonChooser.getSelected())
     {
       case 0: return new DoNothing();
-      case 1: return new Score(m_Shooter, m_Intake, m_Auton_Subsystem); 
+      case 1: return new Score_FirstShot(m_Shooter, m_Intake, m_Auton_Subsystem); 
       case 2: return new Score_LeftBall_Score(m_Shooter, m_Intake, m_DriveTrain, m_Auton_Subsystem, true); 
       case 3: return new Score_LeftBall_Score(m_Shooter, m_Intake, m_DriveTrain, m_Auton_Subsystem, false); 
       case 4: return new Score_FarLeftBall_Score(m_Shooter, m_Intake, m_DriveTrain, m_Auton_Subsystem, true); 
@@ -138,6 +185,15 @@ public class RobotContainer {
       case 7: return new Score_Leave(m_Shooter, m_Intake, m_DriveTrain, m_Auton_Subsystem); 
       case 8: return new Score_Leave_GetBall(m_Shooter, m_Intake, m_DriveTrain, m_Auton_Subsystem); 
       case 9: return new Score_Leave_GetBall_Score(m_Shooter, m_Intake, m_DriveTrain, m_Auton_Subsystem); 
+      case 10: return new Score_Leave_GetBall_Score_GetFarBall(m_Shooter, m_Intake, m_DriveTrain, m_Auton_Subsystem); 
+      case 11: return new Score_Leave_GetBall_Score_GetFarBall_Score(m_Shooter, m_Intake, m_DriveTrain, m_Auton_Subsystem, true); 
+      case 12: return new Score_Leave_GetBall_Score_Slow(m_Shooter, m_Intake, m_DriveTrain, m_Auton_Subsystem);
+      case 13: return new Score_LeftBall_Far_Score(m_Shooter, m_Intake, m_DriveTrain, m_Auton_Subsystem, true); 
+      case 14: return new Score_LeftBall_Far_Score(m_Shooter, m_Intake, m_DriveTrain, m_Auton_Subsystem, false); 
+      case 15: return new Score_Leave_GetBall_Score_GetFarBall_Score(m_Shooter, m_Intake, m_DriveTrain, m_Auton_Subsystem, false); 
+      case 16: return new Score_Leave_GetBall_GetFarBall_GetMiddle_Score(m_Shooter, m_Intake, m_DriveTrain, m_Auton_Subsystem, true); 
+      case 17: return new Score_Leave_GetBall_GetFarBall_GetMiddle_Score(m_Shooter, m_Intake, m_DriveTrain, m_Auton_Subsystem, false); 
+
 
       default: return new DoNothing();
     }    

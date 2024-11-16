@@ -34,6 +34,32 @@ public class Auton_Subsystem extends SubsystemBase
     );
   }
 
+  public Command autonScoreBumperAngled(Intake intake, Shooter shooter)
+  {
+    return new SequentialCommandGroup(
+      autonShootBumperAngled(shooter).until(()-> (new Auton_Wait(150.0).getAsBooleanSupplier().getAsBoolean() || shooterUpToSpeed(shooter))),
+      new ParallelCommandGroup(
+        intake.BasketIntakeCommand().until(()-> !hasBall()),
+        new Auton_Wait(50.0)
+      ),
+      new InstantCommand(()-> {Global_Variables.isShooting = false;})
+    );
+  }
+
+  public Command autonScoreBumperPerpinduclar(Intake intake, Shooter shooter)
+  {
+    return new SequentialCommandGroup(
+      autonShootBumperPerpindicular(shooter).until(()-> (new Auton_Wait(150.0).getAsBooleanSupplier().getAsBoolean() || shooterUpToSpeed(shooter))),
+      new ParallelCommandGroup(
+        intake.BasketIntakeCommand().until(()-> !hasBall()),
+        new Auton_Wait(50.0)
+      ),
+      new InstantCommand(()-> {Global_Variables.isShooting = false;})
+    );
+  }
+
+
+
   private Command autonShoot(Shooter shooter)
   {
     return Commands.run(()-> 
@@ -42,6 +68,26 @@ public class Auton_Subsystem extends SubsystemBase
           Global_Variables.isShooting = true;
       }, shooter);
   }
+
+  /**For Auton */
+  private Command autonShootBumperAngled(Shooter shooter)
+  {
+    return Commands.run(()-> 
+      {
+          shooter.setOnBumperAngledShotRPM(); 
+          Global_Variables.isShooting = true;
+      }, shooter);
+  }
+  /**For Auton */
+  private Command autonShootBumperPerpindicular(Shooter shooter)
+  {
+    return Commands.run(()-> 
+      {
+          shooter.setOnBumperShotPerpindicularRPM(); 
+          Global_Variables.isShooting = true;
+      }, shooter);
+  }
+
 
   public Command autonIntake(Intake intake)
   {

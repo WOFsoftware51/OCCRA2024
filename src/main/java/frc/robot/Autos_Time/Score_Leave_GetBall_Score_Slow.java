@@ -14,20 +14,19 @@ import frc.robot.subsystems.Auton_Subsystem;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
-public final class Score_Leave_GetBall_Score extends SequentialCommandGroup {
+public final class Score_Leave_GetBall_Score_Slow extends SequentialCommandGroup {
 
   /**Robot must be placed facing a ball. 
    * <p>Robot scores, leaves, picks up ball, drives back to starting position, then scores.*/
-  public Score_Leave_GetBall_Score(Shooter shooter, Intake intake, DriveTrain driveTrain, Auton_Subsystem auton_Subsystem){
+  public Score_Leave_GetBall_Score_Slow(Shooter shooter, Intake intake, DriveTrain driveTrain, Auton_Subsystem auton_Subsystem){
     addCommands(
       new InstantCommand(()-> driveTrain.resetGryo()),
       auton_Subsystem.autonScoreBumperAngled(intake, shooter),
       new ParallelCommandGroup(
-        new Auton_DriveCommand_Time(driveTrain, false, 0.0,(AutonPositions.FEET_TO_SECONDS(Math.sqrt(168) + 2))),     //Constants.AutonPositions.XCoordinate.START_TO_WHITELINE),
+        new Auton_DriveCommand_Time(driveTrain, false,  1.5 *(AutonPositions.FEET_TO_SECONDS(Math.sqrt(168) + 2)),0.375,false),     //Constants.AutonPositions.XCoordinate.START_TO_WHITELINE),
         auton_Subsystem.autonIntakeUntilHasBall(intake)),
-      new Auton_DriveCommand_Time(driveTrain, true, 0.0, (AutonPositions.FEET_TO_SECONDS(Math.sqrt(168) + 2))),
+      new Auton_DriveCommand_Time(driveTrain, true,  1.5 *(AutonPositions.FEET_TO_SECONDS(Math.sqrt(168) + 2)),0.375,false),
       new Score(shooter, intake, auton_Subsystem)
-
     );
   }
 }

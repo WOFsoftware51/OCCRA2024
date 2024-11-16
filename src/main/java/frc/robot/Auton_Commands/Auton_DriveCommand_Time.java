@@ -18,6 +18,8 @@ public class Auton_DriveCommand_Time extends Command {
   private boolean endCondition = false;
   private boolean angleGood = false;
   private double m_Negative;
+  private double m_speed;
+  private boolean m_useGyro = false;
 
   public Auton_DriveCommand_Time(DriveTrain driveTrain, boolean isNegative, double rotationTargetDegrees, double durationSeconds) {
     m_DriveTrain = driveTrain;
@@ -26,7 +28,20 @@ public class Auton_DriveCommand_Time extends Command {
     m_isNegative = isNegative;
     m_RotationTargetDegrees = rotationTargetDegrees;
     m_durationSeconds = durationSeconds;
+    m_speed = 0.75;
+    m_useGyro = true;
   }
+
+  public Auton_DriveCommand_Time(DriveTrain driveTrain, boolean isNegative, double durationSeconds, double speed, boolean useGyro) {
+    m_DriveTrain = driveTrain;
+    addRequirements(driveTrain);
+
+    m_isNegative = isNegative;
+    m_durationSeconds = durationSeconds;
+    m_speed = speed;
+    m_useGyro = useGyro;
+  }
+
 
   @Override 
   public void initialize()
@@ -38,17 +53,33 @@ public class Auton_DriveCommand_Time extends Command {
   @Override
   public void execute() 
   {
-    angleGood = !m_DriveTrain.gyroIsConnected() || (m_DriveTrain.getGryoDegrees() < m_RotationTargetDegrees + 2.5 && m_DriveTrain.getGryoDegrees() > m_RotationTargetDegrees - 2.5);
-
-    if(m_durationSeconds < counter*0.05 && angleGood)
+    if(m_useGyro)
     {
-      m_DriveTrain.driveAuton(0, 0);
-      endCondition = true;
+      angleGood = !m_DriveTrain.gyroIsConnected() || (m_DriveTrain.getGryoDegrees() < m_RotationTargetDegrees + 4 && m_DriveTrain.getGryoDegrees() > m_RotationTargetDegrees - 4);
+
+      if(m_durationSeconds < counter*0.05 && angleGood)
+      {
+        m_DriveTrain.driveAuton(0, 0);
+        endCondition = true;
+      }
+      else
+      {
+        counter++;
+        m_DriveTrain.driveAuton(m_Negative * m_speed, m_DriveTrain.powerGoToAngle(m_RotationTargetDegrees));
+      }
     }
     else
     {
-      counter++;
-      m_DriveTrain.driveAuton(m_Negative * 0.75 , m_DriveTrain.powerGoToAngle(m_RotationTargetDegrees));
+      if(m_durationSeconds < counter*0.05)
+      {
+        m_DriveTrain.driveAuton(0, 0);
+        endCondition = true;
+      }
+      else
+      {
+        counter++;
+        m_DriveTrain.driveAuton(m_Negative * m_speed, 0);
+      }
     }
 
 

@@ -21,16 +21,18 @@ public final class Global_Variables
     public static double rotationPercentModifier = 0.5;
     public static boolean boostOn = false;
     public static boolean isShooting = false;
-    private static DigitalInput m_sensor = new DigitalInput(3);
+    private static DigitalInput m_sensorBottom = new DigitalInput(3);
+    private static DigitalInput m_sensorTop = new DigitalInput(2);
     public static SendableChooser<Double> testAutonTimer = new SendableChooser<>();
     public static SendableChooser<Double> velocitySendableChooser = new SendableChooser<>();
     public static SCORING_MODE currentScoringMode = SCORING_MODE.BASKET;
+    public static boolean isUsingGyro = true;
 
     /**@return 1 if has piece
      *  <li> -1 if doesn't have piece
      */
     public static int getSensorVal(){
-        if(m_sensor.get()) {
+        if(m_sensorBottom.get() || m_sensorTop.get()) {
             return 1;
         }
         else{
