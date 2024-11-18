@@ -46,3 +46,5 @@ R=a/g
 4.) Work on 4 piece
 
 5.) Work on 3 close piece
+
+Starting angle (From perpindicular to starting wlal) : 19.2 degrees 

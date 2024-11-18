@@ -80,7 +80,7 @@ public class DriveTrain extends SubsystemBase {
 
     if(Math.abs(getGryoDegrees() - angle) <= 10)
     {
-      kP = 0.0575;//0.0325; //0.75
+      kP = 0.0525;//0.0325; //0.75
     }
     else{
       kP = 0.015;

@@ -30,7 +30,7 @@ public class Auton_Rotate_Command extends Command {
   @Override
   public void execute() 
   {
-    angleGood = (m_DriveTrain.getGryoDegrees() < m_RotationTargetDegrees + 2.5 && m_DriveTrain.getGryoDegrees() > m_RotationTargetDegrees - 2.5);
+    angleGood = (m_DriveTrain.getGryoDegrees() < m_RotationTargetDegrees + 4 && m_DriveTrain.getGryoDegrees() > m_RotationTargetDegrees - 4);
 
     if(angleGood)
     {

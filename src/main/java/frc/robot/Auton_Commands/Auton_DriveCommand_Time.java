@@ -32,6 +32,17 @@ public class Auton_DriveCommand_Time extends Command {
     m_useGyro = true;
   }
 
+  public Auton_DriveCommand_Time(DriveTrain driveTrain, boolean isNegative, double rotationTargetDegrees, double durationSeconds, double speed, boolean useGyro) {
+    m_DriveTrain = driveTrain;
+    addRequirements(driveTrain);
+
+    m_isNegative = isNegative;
+    m_durationSeconds = durationSeconds;
+    m_RotationTargetDegrees = rotationTargetDegrees;
+    m_speed = speed;
+    m_useGyro = useGyro;
+  }
+
   public Auton_DriveCommand_Time(DriveTrain driveTrain, boolean isNegative, double durationSeconds, double speed, boolean useGyro) {
     m_DriveTrain = driveTrain;
     addRequirements(driveTrain);
@@ -41,7 +52,6 @@ public class Auton_DriveCommand_Time extends Command {
     m_speed = speed;
     m_useGyro = useGyro;
   }
-
 
   @Override 
   public void initialize()

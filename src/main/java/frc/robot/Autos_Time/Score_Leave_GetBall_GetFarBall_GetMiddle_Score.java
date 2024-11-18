@@ -32,23 +32,26 @@ public final class Score_Leave_GetBall_GetFarBall_GetMiddle_Score extends Sequen
         auton_Subsystem.autonIntakeUntilHasBall(intake)),
       new ParallelDeadlineGroup(
         new Auton_DriveCommand_Time(driveTrain, true, 0.0, AutonPositions.FEET_TO_SECONDS(Math.sqrt(168) + 2)),
-        auton_Subsystem.autonIntakeUntilHasBall(intake)),
+        auton_Subsystem.autonIntakeUntilHasBall(intake).until(new Auton_Wait(25).getAsBooleanSupplier())),
       new Score(shooter, intake, auton_Subsystem),
-      new Auton_Rotate_Command(driveTrain, 2.3* leftOrRight),     //      new Auton_Rotate_Command(driveTrain, 1.52392780891 * leftOrRight),     //Constants.AutonPositions.XCoordinate.START_TO_WHITELINE),
+      new Auton_Rotate_Command(driveTrain, 3* leftOrRight),     //      new Auton_Rotate_Command(driveTrain, 1.52392780891 * leftOrRight),     //Constants.AutonPositions.XCoordinate.START_TO_WHITELINE),
       new ParallelDeadlineGroup(
-        new Auton_DriveCommand_Time(driveTrain, false, 2.3 * leftOrRight, AutonPositions.FEET_TO_SECONDS(22)),
+        new Auton_DriveCommand_Time(driveTrain, false, 3 * leftOrRight, AutonPositions.FEET_TO_SECONDS(22)),
         auton_Subsystem.autonIntakeUntilHasBall(intake)),
       new ParallelDeadlineGroup(
-        new Auton_DriveCommand_Time(driveTrain, true, 2.3 * leftOrRight, AutonPositions.FEET_TO_SECONDS(20)),
-        auton_Subsystem.autonIntakeUntilHasBall(intake)),
+        new Auton_DriveCommand_Time(driveTrain, true, 3 * leftOrRight, AutonPositions.FEET_TO_SECONDS(20)),
+        auton_Subsystem.autonIntakeUntilHasBall(intake).until(new Auton_Wait(25).getAsBooleanSupplier())),
       new Score(shooter, intake, auton_Subsystem),
-      new Auton_Rotate_Command(driveTrain, -30.0 * leftOrRight),
+      new Auton_Rotate_Command(driveTrain, -24.0 * leftOrRight),
+      new Auton_Rotate_Command(driveTrain, -40.0 * leftOrRight),
       new ParallelDeadlineGroup(
-        new Auton_DriveCommand_Time(driveTrain, false, -31.0 * leftOrRight, AutonPositions.FEET_TO_SECONDS(18)),
+        new Auton_DriveCommand_Time(driveTrain, false, -40.0 * leftOrRight, AutonPositions.FEET_TO_SECONDS(18)),
         auton_Subsystem.autonIntakeUntilHasBall(intake)),
       new ParallelDeadlineGroup(
-      new Auton_DriveCommand_Time(driveTrain, true, -31.0 * leftOrRight, AutonPositions.FEET_TO_SECONDS(18)),
-        auton_Subsystem.autonIntakeUntilHasBall(intake))
+      new Auton_DriveCommand_Time(driveTrain, true, -40.0, AutonPositions.FEET_TO_SECONDS(17), 1.0, true),
+        auton_Subsystem.autonIntakeUntilHasBall(intake).until(new Auton_Wait(25).getAsBooleanSupplier())),
+      new Auton_Rotate_Command(driveTrain, -20.0),
+      new Score(shooter, intake, auton_Subsystem)
     );
   }
 }

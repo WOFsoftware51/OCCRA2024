@@ -58,6 +58,10 @@ public class Auton_Subsystem extends SubsystemBase
     );
   }
 
+  public Command autonShootWaitUntil(Shooter shooter, double shooterTargetVelocityRPM)
+  {
+    return Commands.run(()->{}, shooter).until(()-> shooterUpToSpeed(shooter, shooterTargetVelocityRPM));
+  }
 
 
   private Command autonShoot(Shooter shooter)
@@ -107,6 +111,11 @@ public class Auton_Subsystem extends SubsystemBase
   {
     return (shooter.getVelocity1RPM() + 200 >= shooter.getTargetVelocity()) && shooter.getVelocity1RPM() - 200 <= shooter.getTargetVelocity();
   }
+    public boolean shooterUpToSpeed(Shooter shooter, double shooterTargetVelocityRPM)
+  {
+    return (shooter.getVelocity1RPM() + 200 >= shooterTargetVelocityRPM) && shooter.getVelocity1RPM() - 200 <= shooterTargetVelocityRPM;
+  }
+
 
 
   private boolean hasBallPlusTime()
