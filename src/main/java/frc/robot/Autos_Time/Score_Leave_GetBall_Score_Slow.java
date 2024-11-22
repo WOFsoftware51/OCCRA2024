@@ -23,9 +23,9 @@ public final class Score_Leave_GetBall_Score_Slow extends SequentialCommandGroup
       new InstantCommand(()-> driveTrain.resetGryo()),
       auton_Subsystem.autonScoreBumperAngled(intake, shooter),
       new ParallelCommandGroup(
-        new Auton_DriveCommand_Time(driveTrain, false,  1.5 *(AutonPositions.FEET_TO_SECONDS(Math.sqrt(168) + 2)),0.375,false),     //Constants.AutonPositions.XCoordinate.START_TO_WHITELINE),
+        new Auton_DriveCommand_Time(driveTrain, false,  1.5 *(AutonPositions.FEET_TO_SECONDS(Math.sqrt(168) + 2)),0.375),     //Constants.AutonPositions.XCoordinate.START_TO_WHITELINE),
         auton_Subsystem.autonIntakeUntilHasBall(intake)),
-      new Auton_DriveCommand_Time(driveTrain, true,  1.5 *(AutonPositions.FEET_TO_SECONDS(Math.sqrt(168) + 2)),0.375,false),
+      new Auton_DriveCommand_Time(driveTrain, true,  1.5 *(AutonPositions.FEET_TO_SECONDS(Math.sqrt(168) + 2)),0.375),
       new Score(shooter, intake, auton_Subsystem)
     );
   }

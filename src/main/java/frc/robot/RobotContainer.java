@@ -10,6 +10,7 @@ import frc.robot.Autos_Time.Score;
 import frc.robot.Autos_Time.Score_FarLeftBall_Score;
 import frc.robot.Autos_Time.Score_FirstShot;
 import frc.robot.Autos_Time.Score_Leave;
+import frc.robot.Autos_Time.Score_Leave_Get2CloseBalls;
 import frc.robot.Autos_Time.Score_Leave_GetBall;
 import frc.robot.Autos_Time.Score_Leave_GetBall_GetFarBall_GetMiddle_Score;
 import frc.robot.Autos_Time.Score_Leave_GetBall_Score;
@@ -19,6 +20,7 @@ import frc.robot.Autos_Time.Score_Leave_GetBall_Score_Slow;
 import frc.robot.Autos_Time.Score_LeftBall_Far_Score;
 import frc.robot.Autos_Time.Score_LeftBall_Score;
 import frc.robot.commands.CANdle_Intake;
+import frc.robot.commands.CANdle_Shooter_Ready;
 import frc.robot.commands.DriveBoost;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ShooterGoToVelocity;
@@ -64,7 +66,7 @@ public class RobotContainer {
   public RobotContainer() 
   {
     m_DriveTrain.setDefaultCommand(new DriveCommand(m_DriveTrain, ()-> driver.getLeftY(), ()-> driver.getRightX()));
-    m_Candle.setDefaultCommand(m_Candle.CANdle_Default_Commad());
+    m_Candle.setDefaultCommand(m_Candle.CANdle_Default_Commad().ignoringDisable(true));
     configureBindings();
     printToSmartDashboard();
   }
@@ -80,9 +82,14 @@ public class RobotContainer {
 
     /**Shooter revs up */
     operator.a().whileTrue(new ShooterGoToVelocity(m_Shooter));
+    operator.a().whileTrue(new CANdle_Shooter_Ready(m_Candle));
 
     /*IntakeSpit */
     operator.rightBumper().whileTrue(m_Intake.intakeOutCommand().finallyDo(()-> {m_Intake.floorIntakeOff(); m_Intake.transferIntakeOff();})); //
+
+    /*Feeding Intake */
+    operator.rightTrigger(0.8).whileTrue(m_Intake.feedingShotIntakeCommand().finallyDo(()-> {m_Intake.floorIntakeOff(); m_Intake.transferIntakeOff();})); //
+    operator.rightTrigger().whileTrue(new CANdle_Intake(m_Candle));
 
     /*Intake */
     operator.leftTrigger(0.8).whileTrue(m_Intake.BasketIntakeCommand().finallyDo(()-> {m_Intake.floorIntakeOff(); m_Intake.transferIntakeOff();})); //
@@ -140,7 +147,8 @@ public class RobotContainer {
     autonChooser.addOption("Score 2 Piece Slow", 12);
     autonChooser.addOption("Left 4 Piece (Gets Center Piece at the End)", 16);
     autonChooser.addOption("Right 4 Piece (Gets Center Piece at the End)", 17);
-
+    autonChooser.addOption("Left 3 Piece Close", 18);
+    autonChooser.addOption("Right 3 Piece Close", 19);
 
     SmartDashboard.putData("Auton Timer", testAutonTimer);
 
@@ -193,7 +201,8 @@ public class RobotContainer {
       case 15: return new Score_Leave_GetBall_Score_GetFarBall_Score(m_Shooter, m_Intake, m_DriveTrain, m_Auton_Subsystem, false); 
       case 16: return new Score_Leave_GetBall_GetFarBall_GetMiddle_Score(m_Shooter, m_Intake, m_DriveTrain, m_Auton_Subsystem, true); 
       case 17: return new Score_Leave_GetBall_GetFarBall_GetMiddle_Score(m_Shooter, m_Intake, m_DriveTrain, m_Auton_Subsystem, false); 
-
+      case 18: return new Score_Leave_Get2CloseBalls(m_Shooter, m_Intake, m_DriveTrain, m_Auton_Subsystem, true);
+      case 19: return new Score_Leave_Get2CloseBalls(m_Shooter, m_Intake, m_DriveTrain, m_Auton_Subsystem, false);
 
       default: return new DoNothing();
     }    

@@ -4,17 +4,19 @@
 
 package frc.robot.commands;
 
+import javax.print.CancelablePrintJob;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Global_Variables;
 import frc.robot.subsystems.CANdle_Subsystem;
 
-public class CANdle_Intake extends Command {
+public class CANdle_Shooter_Ready extends Command {
   private CANdle_Subsystem m_CANdle;
-  /** Creates a new CANdle_Intake. */
-  public CANdle_Intake(CANdle_Subsystem CANdle) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    m_CANdle = CANdle;
-    addRequirements(CANdle);
+  private boolean isReady;
+  public CANdle_Shooter_Ready(CANdle_Subsystem candle) 
+  {
+    m_CANdle = candle;
+    addRequirements(candle);
   }
 
   // Called when the command is initially scheduled.
@@ -25,24 +27,24 @@ public class CANdle_Intake extends Command {
   @Override
   public void execute() 
   {
-    if(Global_Variables.getSensorVal() == 1)
+    if(Global_Variables.shooterCurrentVelocity  + 50 >= Global_Variables.shooterTargetVelocity && Global_Variables.shooterCurrentVelocity - 50 <= Global_Variables.shooterTargetVelocity) 
     {
-      m_CANdle.CANdle_Orange();
-    }
-    else if(Global_Variables.boostOn)
-    {
-      m_CANdle.CANdle_Purple_Larson();
+      isReady = true;
     }
     else
     {
-      m_CANdle.CANdle_Purple();
+      isReady = false;
     }
-  }
 
-  @Override
-  public InterruptionBehavior getInterruptionBehavior()
-  {
-    return InterruptionBehavior.kCancelIncoming;
+    if(isReady)
+    {
+      m_CANdle.CANdle_Solid_Green();
+    }    
+    else
+    {
+      m_CANdle.CANdle_Red();
+    }
+
   }
 
   // Called once the command ends or is interrupted.
@@ -52,6 +54,10 @@ public class CANdle_Intake extends Command {
     m_CANdle.CANdle_Default();
 
   }
+  @Override
+  public InterruptionBehavior getInterruptionBehavior(){
+    return InterruptionBehavior.kCancelIncoming;
+  } 
 
   // Returns true when the command should end.
   @Override

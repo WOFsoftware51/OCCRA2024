@@ -66,7 +66,6 @@ public class Shooter extends SubsystemBase {
     motor1.set(0.75); //4000 RPM
     // motor2.set(0.75);
   }
-
   public void setOnBasketVelocityRPM()
   {
     targetVelocity = Global_Variables.velocitySendableChooser.getSelected();
@@ -77,6 +76,15 @@ public class Shooter extends SubsystemBase {
     motor2.config_kF(0, 0.04);
     motor2.set(TalonSRXControlMode.Velocity, targetVelocity*(4096.0/600.0));
   }
+  public void setOnFeedingShotVelocityRPM ()
+  {
+    targetVelocity = 4000.0;
+    motor1.config_kF(0, kFHumanPlayer);
+    motor1.set(TalonSRXControlMode.Velocity, targetVelocity*(4096.0/600.0));
+
+    motor2.config_kF(0, 0.03);
+    motor2.set(TalonSRXControlMode.Velocity, (targetVelocity-2500)*(4096.0/600.0));
+  }
   public void setOnHumanPlayerVelocityRPM()
   {
     targetVelocity = 2750.0;
@@ -84,8 +92,9 @@ public class Shooter extends SubsystemBase {
     motor1.set(TalonSRXControlMode.Velocity, targetVelocity*(4096.0/600.0));
 
     motor2.config_kF(0, 0.03);
-    motor2.set(TalonSRXControlMode.Velocity, (targetVelocity+750)*(4096.0/600.0));
+    motor2.set(TalonSRXControlMode.Velocity, (targetVelocity+1750)*(4096.0/600.0));
   }
+
   public void setOnBumperShotPerpindicularRPM()
   {
     targetVelocity = Global_Variables.velocitySendableChooser.getSelected();
@@ -145,13 +154,15 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    Global_Variables.shooterCurrentVelocity = getVelocity1RPM();
+    Global_Variables.shooterTargetVelocity = getTargetVelocity();
+
     SmartDashboard.putBoolean("Is Shooting", Global_Variables.isShooting);
     SmartDashboard.putNumber("Shooter 1 RPM", getVelocity1RPM());
     SmartDashboard.putNumber("Shooter 2 RPM", getVelocity2RPM());
 
     SmartDashboard.putNumber("Shooter Rotations", getPositionRotations());
     SmartDashboard.putString("Scoring Mode", Global_Variables.currentScoringMode.toString());
-    SmartDashboard.putNumber("Shooter Target Velocity", targetVelocity);
-    // SmartDashboard.putNumber("Scoring testvariable", testVariable);
+    SmartDashboard.putNumber("Shooter Target Velocity", Global_Variables.shooterTargetVelocity);
   }
 }

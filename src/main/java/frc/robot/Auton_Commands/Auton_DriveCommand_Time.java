@@ -49,6 +49,7 @@ public class Auton_DriveCommand_Time extends Command {
 
     m_isNegative = isNegative;
     m_durationSeconds = durationSeconds;
+    m_RotationTargetDegrees = 0.0;
     m_speed = speed;
     m_useGyro = useGyro;
   }

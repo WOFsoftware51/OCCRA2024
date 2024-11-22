@@ -27,6 +27,8 @@ public final class Global_Variables
     public static SendableChooser<Double> velocitySendableChooser = new SendableChooser<>();
     public static SCORING_MODE currentScoringMode = SCORING_MODE.BASKET;
     public static boolean isUsingGyro = true;
+    public static double shooterTargetVelocity = 0.0;
+    public static double shooterCurrentVelocity = 0.0;
 
     /**@return 1 if has piece
      *  <li> -1 if doesn't have piece
@@ -44,6 +46,7 @@ public final class Global_Variables
     {
         BASKET,
         HUMAN_PLAYER,
+        FEEDING_SHOT
     }
 }
 

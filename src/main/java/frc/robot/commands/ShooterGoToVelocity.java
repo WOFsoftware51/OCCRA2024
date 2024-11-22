@@ -34,10 +34,16 @@ public class ShooterGoToVelocity extends Command
         m_Shooter.setOnBasketVelocityRPM(); 
         Global_Variables.isShooting = true;
     }
-    else
+    else if(Global_Variables.currentScoringMode == SCORING_MODE.HUMAN_PLAYER)
     {
       m_Shooter.setOnHumanPlayerVelocityRPM(); 
       Global_Variables.isShooting = true;
+    }
+    else
+    {
+      m_Shooter.setOnFeedingShotVelocityRPM(); 
+      Global_Variables.isShooting = true;
+
     }
   }
 

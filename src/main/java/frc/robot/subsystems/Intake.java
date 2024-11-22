@@ -113,8 +113,32 @@ public class Intake extends SubsystemBase {
       floorIntakeOff(); 
       transferIntakeOff();
     });
-
   }
+
+  public Command feedingShotIntakeCommand()
+  {
+    return Commands.run(()-> 
+    {      
+      currentScoringMode = SCORING_MODE.FEEDING_SHOT;
+      if(Global_Variables.getSensorVal() == 1 && !Global_Variables.isShooting)
+      {
+        transferIntakeOff();
+        floorIntakeOff();
+      }
+      else
+      {
+        transferIntakeIn();
+        floorIntakeIn();
+      }
+    }, this).
+    finallyDo(()->
+    {
+      floorIntakeOff(); 
+      transferIntakeOff();
+    });
+  }
+
+
 
 
   public Command intakeOutCommand()
