@@ -10,10 +10,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Global_Variables;
 import frc.robot.subsystems.CANdle_Subsystem;
 
-public class CANdle_Shooter_Ready extends Command {
+public class CANdle_Christmas extends Command {
   private CANdle_Subsystem m_CANdle;
-  private boolean isReady;
-  public CANdle_Shooter_Ready(CANdle_Subsystem candle) 
+  private boolean redIsTrue = false;
+  private boolean greenIsTrue = false;
+  private int redCounter = 0;
+  private int greenCounter = 0;
+
+  public CANdle_Christmas(CANdle_Subsystem candle) 
   {
     m_CANdle = candle;
     addRequirements(candle);
@@ -27,22 +31,37 @@ public class CANdle_Shooter_Ready extends Command {
   @Override
   public void execute() 
   {
-    if(Global_Variables.shooterCurrentVelocity  + 300 >= Global_Variables.shooterTargetVelocity && Global_Variables.shooterCurrentVelocity - 300 <= Global_Variables.shooterTargetVelocity) 
+    if(redCounter > 20) 
     {
-      isReady = true;
+      redIsTrue = false;
+      greenCounter++;
     }
     else
     {
-      isReady = false;
+      redIsTrue = true;
     }
 
-    if(isReady)
+    if(greenCounter > 20)
     {
-      m_CANdle.CANdle_Solid_Green();
-    }    
+      greenIsTrue = false;
+      redCounter++;
+    }
     else
     {
-      m_CANdle.CANdle_Red();
+      greenIsTrue = true;
+    }
+
+    if(redIsTrue)
+    {
+      m_CANdle.CANdle_Solid_Red();
+    }    
+    else if(greenIsTrue)
+    {
+      m_CANdle.CANdle_Solid_Green();
+    }
+    else
+    {
+      m_CANdle.CANdle_Solid_Red();
     }
 
   }

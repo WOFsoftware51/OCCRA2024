@@ -19,6 +19,7 @@ import frc.robot.Autos_Time.Score_Leave_GetBall_Score_GetFarBall_Score;
 import frc.robot.Autos_Time.Score_Leave_GetBall_Score_Slow;
 import frc.robot.Autos_Time.Score_LeftBall_Far_Score;
 import frc.robot.Autos_Time.Score_LeftBall_Score;
+import frc.robot.commands.CANdle_Christmas;
 import frc.robot.commands.CANdle_Intake;
 import frc.robot.commands.CANdle_Shooter_Ready;
 import frc.robot.commands.DriveBoost;
@@ -34,6 +35,7 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -66,7 +68,8 @@ public class RobotContainer {
   public RobotContainer() 
   {
     m_DriveTrain.setDefaultCommand(new DriveCommand(m_DriveTrain, ()-> driver.getLeftY(), ()-> driver.getRightX()));
-    m_Candle.setDefaultCommand(m_Candle.CANdle_Default_Commad().ignoringDisable(true));
+    m_Candle.setDefaultCommand(new CANdle_Christmas(m_Candle).ignoringDisable(true));
+    // m_Candle.setDefaultCommand(m_Candle.CANdle_Default_Commad().ignoringDisable(true));
     configureBindings();
     printToSmartDashboard();
   }
@@ -126,7 +129,24 @@ public class RobotContainer {
       operator.getHID().setRumble(RumbleType.kBothRumble, 0);
   }
 
-
+  public void shooterOff()
+  {
+    m_Shooter.setOff();
+  } 
+  public void intakeOff()
+  {
+    m_Intake.bothOff();
+  }
+  public void driveTrainOff()
+  {
+    m_DriveTrain.drive(0, 0);
+  }
+  public void allMotorsOff()
+  {
+    shooterOff();
+    intakeOff();
+    driveTrainOff();
+  }
 
   private void printToSmartDashboard()
   {
@@ -142,13 +162,13 @@ public class RobotContainer {
     autonChooser.addOption("Score + Leave + Get Ball", 8);
     // autonChooser.addOption("Score + Get Ball + Score", 9);
     // autonChooser.addOption("Score + Get Ball + Score + Get Middle Ball", 10);
+    autonChooser.addOption("Score 2 Piece Slow", 12);
     autonChooser.addOption("Left 3 Piece", 11);
     autonChooser.addOption("Right 3 Piece", 15);
-    autonChooser.addOption("Score 2 Piece Slow", 12);
     autonChooser.addOption("Left 4 Piece (Gets Center Piece at the End)", 16);
     autonChooser.addOption("Right 4 Piece (Gets Center Piece at the End)", 17);
-    autonChooser.addOption("Left 3 Piece Close", 18);
-    autonChooser.addOption("Right 3 Piece Close", 19);
+    autonChooser.addOption("Left 3 Piece Close (Probably Don't Run)", 18);
+    autonChooser.addOption("Right 3 Piece Close (Probably Don't Run)", 19);
 
     SmartDashboard.putData("Auton Timer", testAutonTimer);
 

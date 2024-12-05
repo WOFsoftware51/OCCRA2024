@@ -85,6 +85,11 @@ public class CANdle_Subsystem extends SubsystemBase
   {  
     m_toAnimate = new StrobeAnimation(10, 255, 10, 0, 1.0, LedCount, 8);
   }
+  public void CANdle_Solid_Red() 
+  {  
+    m_toAnimate = new StrobeAnimation(100, 0, 0, 0, 1.0, LedCount, 1);
+  }
+
   public void CANdle_Red() 
   {  
     m_toAnimate = new StrobeAnimation(100, 0, 0, 0, 0.5, LedCount, 1);
@@ -108,7 +113,6 @@ public class CANdle_Subsystem extends SubsystemBase
   {  
     m_toAnimate = new StrobeAnimation(200, 200, 200, 100, 0.5, LedCount, 8);
   }
-
   
   public Command CANdle_Command(Runnable animationToRun)
   {
@@ -128,7 +132,6 @@ public class CANdle_Subsystem extends SubsystemBase
   {
     return CANdle_Command(()-> CANdle_Fast_Purple());
   }
-
 
   @Override
   public void periodic() 
